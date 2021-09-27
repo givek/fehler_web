@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { FormikControl } from './FormikControl';
 import { ButtonPrimary } from './ButtonPrimary';
 import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/auth/authContext';
 
 const styles = {
   input: {
@@ -36,34 +37,21 @@ const validationSchema = Yup.object({
   password: Yup.string().required('Password is required field.'),
 });
 
+// Instead of checking for token to validate ProtectedRoutes
+// check for userData present in global state. (as the token will have to be valid to fetch user data)
+
 export const LoginForm = () => {
   const { state } = useLocation();
+  const { login } = useAuth();
   const histroy = useHistory();
 
   const onSubmit = async (data = {}, { setErrors }) => {
-    const url = 'http://127.0.0.1:8000/api/token';
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
-
-    try {
-      const response = await fetch(url, requestOptions);
-      if (response.ok) {
-        const res = await response.json();
-        window.localStorage.setItem('accessToken', res);
-        histroy.push(state?.from || '/spaces');
-      } else {
-        const res = await response.json();
-        setErrors({ password: res.errors['non_field_errors'] });
-      }
-    } catch (error) {
-      alert(error);
+    const response = await login(data);
+    if (response.ok) {
+      console.log(response.successMessage);
+      histroy.push(state?.from || '/spaces');
+    } else {
+      setErrors(response.errors);
     }
   };
 
