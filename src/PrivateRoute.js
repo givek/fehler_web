@@ -6,7 +6,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={props => {
-        if (window.localStorage.getItem('accessToken')) {
+        if (window.localStorage.getItem('userToken')) {
           return <Component {...props} />;
         } else {
           return (
