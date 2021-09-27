@@ -10,6 +10,7 @@ import { Fonts } from './components/Fonts';
 import { Spaces } from './pages/Spaces';
 import { Projects } from './pages/Projects';
 import { PrivateRoute } from './PrivateRoute';
+import { AuthProvider } from './contexts/auth/AuthContext';
 
 const theme = extendTheme({
   fonts: {
@@ -23,12 +24,14 @@ function App() {
       <Fonts />
       <Router>
         <Switch>
+          <AuthProvider>
             <Route path="/" exact component={Home} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/createspace" component={CreateSpace} />
             <PrivateRoute path="/spaces" component={Spaces} />
             <PrivateRoute path="/projects" component={Projects} />
+          </AuthProvider>
         </Switch>
       </Router>
     </ChakraProvider>
