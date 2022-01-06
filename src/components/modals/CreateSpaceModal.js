@@ -69,7 +69,7 @@ export const CreateSpaceModal = props => {
               <Button size="sm" variant="ghost" mr={3} onClick={props.onClose}>
                 Close
               </Button>
-              <Button type='submit' size="sm" colorScheme="blue">
+              <Button type="submit" size="sm" colorScheme="blue">
                 Create
               </Button>
             </ModalFooter>

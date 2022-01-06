@@ -1,19 +1,19 @@
+import React from 'react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Button } from '@chakra-ui/button';
-import { useDisclosure } from '@chakra-ui/hooks';
-import { Link } from '@chakra-ui/layout';
 import { Box, Heading, Stack, Text, Wrap, WrapItem } from '@chakra-ui/layout';
+import { useDisclosure } from '@chakra-ui/hooks';
 import { Link as RouterLink } from 'react-router-dom';
-import React from 'react';
+
 import { CreateSpaceModal } from '../components/modals/CreateSpaceModal';
 import { useAuth } from '../contexts/auth/authContext';
 
 export const Spaces = () => {
+  const { userData } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [user, setUser] = React.useState(null);
   const [spaces, setSpaces] = React.useState(null);
 
-  const { userData } = useAuth();
   React.useEffect(() => {
     const getUserData = async () => {
       const requestOptions = {
@@ -69,6 +69,7 @@ export const Spaces = () => {
       getUserSpaces();
     }
   }, [user]);
+
   return (
     <Box px="56px" py="48px">
       {JSON.stringify(user)}
@@ -103,10 +104,17 @@ export const Spaces = () => {
         <Stack direction="row" spacing="12">
           {spaces
             ? spaces.map(space => (
-                <Button as={RouterLink} to="/projects"
+                <Button
+                  as={RouterLink}
+                  to="/projects"
                   key={space.id}
-                  bgColor="#fff" w="136px" h="104px" boxShadow="md"
-                  borderRadius="md" >{space.name}
+                  bgColor="#fff"
+                  w="136px"
+                  h="104px"
+                  boxShadow="md"
+                  borderRadius="md"
+                >
+                  {space.name}
                 </Button>
               ))
             : null}
