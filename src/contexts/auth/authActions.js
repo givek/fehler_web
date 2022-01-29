@@ -18,7 +18,6 @@ export const login = async (data, dispatchToken) => {
 
     if (response.ok) {
       const res = await response.json();
-      window.localStorage.setItem('userToken', res.token);
       dispatchToken({ type: SET_TOKEN, token: res.token });
       return {
         ok: true,
@@ -56,7 +55,6 @@ export const register = async (data, dispatchToken) => {
 
     if (response.ok) {
       const res = await response.json();
-      window.localStorage.setItem('userToken', res.token);
       dispatchToken({ type: SET_TOKEN, token: res.token });
       return {
         ok: true,
