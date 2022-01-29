@@ -24,8 +24,8 @@ function App() {
       <Fonts />
       <Router>
         <Switch>
+          <Route path="/" exact component={Home} />
           <AuthProvider>
-            <Route path="/" exact component={Home} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/createspace" component={CreateSpace} />
