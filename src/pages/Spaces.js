@@ -9,42 +9,11 @@ import { CreateSpaceModal } from '../components/modals/CreateSpaceModal';
 import { useAuth } from '../contexts/auth/authContext';
 
 export const Spaces = () => {
-  const { userData } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [user, setUser] = React.useState(null);
   const [spaces, setSpaces] = React.useState(null);
 
-  React.useEffect(() => {
-    const getUserData = async () => {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token: userData.userToken }),
-      };
-
-      // configure base url.
-      try {
-        const response = await fetch(
-          `http://127.0.0.1:8000/api/user-details`,
-          requestOptions
-        );
-
-        if (response.ok) {
-          const res = await response.json();
-          setUser(res.user);
-        } else {
-          const res = await response.json();
-          console.error(res);
-        }
-      } catch (error) {
-        alert(error);
-      }
-    };
-    getUserData();
-  }, [userData]);
+  const { userData } = useAuth();
+  const user = userData.currentUser;
 
   React.useEffect(() => {
     const getUserSpaces = async () => {
@@ -130,6 +99,7 @@ export const Spaces = () => {
           </Button>
         </Stack>
       </Box>
+      <pre>{JSON.stringify(userData)}</pre>
     </Box>
   );
 };
