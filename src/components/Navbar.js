@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import {
   Box,
   Flex,
@@ -18,7 +18,6 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
-
 const Links = ['Projects', 'People'];
 
 const NavLink = ({ children }) => (
