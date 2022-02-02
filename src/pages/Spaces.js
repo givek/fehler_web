@@ -7,37 +7,39 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { CreateSpaceModal } from '../components/modals/CreateSpaceModal';
 import { useAuth } from '../contexts/auth/authContext';
+import useAuthFehlerApi from '../hooks/useAuthFehlerApi';
 
 export const Spaces = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [spaces, setSpaces] = React.useState(null);
-
   const { userData } = useAuth();
   const user = userData.currentUser;
+  const [spaces, setSpaces] = React.useState([]);
 
+  const authFehlerApi = useAuthFehlerApi();
+
+  // fetch user spaces and set spaces state with response.
   React.useEffect(() => {
-    const getUserSpaces = async () => {
+    const fetchSpaces = async () => {
       try {
-        const response = await fetch(
-          `http://127.0.0.1:8000/api/spaces/${user.id}`
-        );
+        const response = await authFehlerApi.get(`spaces`);
 
-        if (response.ok) {
-          const res = await response.json();
-          console.log(res);
-          setSpaces(res);
-        } else {
-          const res = await response.json();
-          console.error(res);
+        console.log(response);
+
+        if (response) {
+          setSpaces(response.data);
         }
       } catch (error) {
+        // TODO: handle errors
+        if (error.response) {
+          console.log(error.response);
+          console.log(error.response.status);
+          console.log(error.response.data.name);
+        }
         alert(error);
       }
     };
-    if (user) {
-      getUserSpaces();
-    }
-  }, [user]);
+    fetchSpaces();
+  }, [authFehlerApi]);
 
   return (
     <Box px="56px" py="48px">
@@ -45,6 +47,8 @@ export const Spaces = () => {
       {JSON.stringify(spaces)}
       <CreateSpaceModal
         user={user}
+        // pass setSpaces function down to modal component, so it can update spaces state.
+        setSpaces={setSpaces}
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={onClose}

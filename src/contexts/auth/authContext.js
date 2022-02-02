@@ -1,7 +1,9 @@
+import { Spinner } from '@chakra-ui/react';
 import React from 'react';
+import fehlerApi from '../../utils/fehlerApi';
 import { login, register } from './authActions';
 import { authReducer } from './authReducer';
-import { SET_CURRENT_USER, SET_LOADING } from './authTypes';
+import { LOGUT, SET_CURRENT_USER, SET_LOADING } from './authTypes';
 
 // TODO: separate Auth and User context
 const AuthContext = React.createContext();
@@ -40,39 +42,31 @@ export const AuthProvider = ({ children }) => {
   React.useEffect(() => {
     async function checkLogin() {
       console.log('start checkLogin');
-      const token = window.localStorage.getItem('userToken');
 
       // set isLoading to true
 
       dispatch({ type: SET_LOADING });
 
-      if (token) {
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token: userData.userToken }),
-        };
-
+      if (userData.userToken) {
         try {
-          const response = await fetch(
-            `http://127.0.0.1:8000/api/user-details`,
-            requestOptions
-          );
+          fehlerApi.defaults.headers.common[
+            'Authorization'
+          ] = `Token ${userData.userToken}`;
 
+          const response = await fehlerApi.get(`user-details`);
+
+          console.log(response);
           // set isLoading to false
 
-          if (response.ok) {
-            const res = await response.json();
-            console.log(res.user);
-            dispatch({ type: SET_CURRENT_USER, currentUser: res.user });
-          } else {
-            const res = await response.json();
-            console.error(res);
+          if (response.status === 200) {
+            console.log(response.data);
+            dispatch({ type: SET_CURRENT_USER, currentUser: response.data });
           }
         } catch (error) {
+          if (error.response) {
+            // dispatch({ type: LOGUT });
+            dispatch({ type: SET_CURRENT_USER, currentUser: null });
+          }
           alert(error);
         }
       }
@@ -87,9 +81,16 @@ export const AuthProvider = ({ children }) => {
       register: userData => register(userData, dispatch),
       login: userData => login(userData, dispatch),
       logout: () => dispatch({ type: 'SIGN_OUT' }),
+      dispatch,
     }),
     [userData]
   );
+
+  // return userData.isLoading ? (
+  //   <Spinner />
+  // ) : (
+  //   <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  // );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

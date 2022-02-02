@@ -1,75 +1,50 @@
+import fehlerApi from '../../utils/fehlerApi';
 import { SET_TOKEN } from './authTypes';
 
-export const login = async (data, dispatchToken) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  };
-
+export async function login(data, dispatchToken) {
   try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/token`,
-      requestOptions
-    );
+    const response = await fehlerApi.post(`token`, data);
 
-    if (response.ok) {
-      const res = await response.json();
-      dispatchToken({ type: SET_TOKEN, token: res.token });
+    if (response.status === 200) {
+      dispatchToken({ type: SET_TOKEN, token: response.data.token });
       return {
         ok: true,
         successMessage: 'Login Successfull.',
         errors: null,
       };
-    } else {
-      const res = await response.json();
+    }
+  } catch (error) {
+    if (error.response) {
       return {
         ok: false,
         successMessage: null,
-        errors: { password: res.errors['non_field_errors'] },
+        errors: { password: error.response.data.errors['non_field_errors'] },
       };
     }
-  } catch (error) {
     alert(error);
   }
-};
+}
 
-export const register = async (data, dispatchToken) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  };
-
+export async function register(data, dispatchToken) {
   try {
-    const response = await fetch(
-      `http://127.0.0.1:8000/api/register`,
-      requestOptions
-    );
+    const response = await fehlerApi.post(`register`, data);
 
-    if (response.ok) {
-      const res = await response.json();
-      dispatchToken({ type: SET_TOKEN, token: res.token });
+    if (response.status === 200) {
+      dispatchToken({ type: SET_TOKEN, token: response.data.token });
       return {
         ok: true,
         successMessage: 'Register Successfull.',
         errors: null,
       };
-    } else {
-      const res = await response.json();
+    }
+  } catch (error) {
+    if (error.response) {
       return {
         ok: false,
         successMessage: null,
-        errors: res['errors'],
+        errors: error.response.data.errors,
       };
     }
-  } catch (error) {
     alert(error);
   }
-};
+}

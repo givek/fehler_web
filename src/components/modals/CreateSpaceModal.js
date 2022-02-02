@@ -10,41 +10,38 @@ import {
 import { Button } from '@chakra-ui/button';
 import { Formik, Form } from 'formik';
 import { FormikControl } from '../FormikControl';
+import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
 
 const initialValues = {
   name: '',
 };
 
 export const CreateSpaceModal = props => {
+  const authFehlerApi = useAuthFehlerApi();
   const onSumbit = async (data = {}, { setErrors }) => {
-    console.log(data);
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: data.name, owner: props.user.email }),
-    };
+    console.log(`form data`, data.name);
 
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/create_space`,
-        requestOptions
-      );
+      const response = await authFehlerApi.post(`create-space`, {
+        name: data.name,
+        owner: props.user.email,
+      });
 
-      if (response.ok) {
-        const res = await response.json();
-        console.log(res);
-      } else {
-        const res = await response.json();
-        console.error(res);
+      console.log(response);
+
+      if (response) {
+        props.setSpaces(response.data);
       }
     } catch (error) {
+      // TODO: handle errors
+      if (error.response) {
+        console.log(error.response);
+        console.log(error.response.status);
+        console.log(error.response.data.name);
+      }
       alert(error);
     }
   };
-
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
