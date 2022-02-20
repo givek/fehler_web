@@ -33,7 +33,14 @@ function Column({ column }) {
 
   return (
     <Box p={3} w={296} bgColor="#EFF1F2" borderRadius="md">
-      <Heading mb="3" size="md" textTransform="capitalize" fontSize="16px">
+      <Heading
+        fontFamily="Montserrat"
+        mb="3"
+        size="md"
+        textTransform="capitalize"
+        fontSize="16px"
+        fontWeight="medium"
+      >
         {column.title}
       </Heading>
       <Stack spacing={4}>
