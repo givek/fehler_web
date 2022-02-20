@@ -156,13 +156,15 @@ function Kanban() {
   return (
     <Box>
       <Navbar />
-      <DragDropContext onDragEnd={onDragEnd}>
-        <HStack spacing={8} alignItems="flex-start" padding={6}>
-          {query.data?.data.map(column => (
-            <Column key={column.id} column={column} />
-          ))}
-        </HStack>
-      </DragDropContext>
+      <Box p={16}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <HStack spacing={8} alignItems="flex-start">
+            {query.data?.data.map(column => (
+              <Column key={column.id} column={column} />
+            ))}
+          </HStack>
+        </DragDropContext>
+      </Box>
     </Box>
   );
 }
