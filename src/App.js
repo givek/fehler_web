@@ -12,6 +12,7 @@ import { Spaces } from './pages/Spaces';
 import { Projects } from './pages/Projects';
 import { PrivateRoute } from './PrivateRoute';
 import { AuthProvider } from './contexts/auth/authContext';
+import Kanban from './pages/Kanban';
 
 const theme = extendTheme({
   fonts: {
@@ -34,10 +35,16 @@ function App() {
             <QueryClientProvider client={queryClient}>
               <PrivateRoute path="/createspace" component={CreateSpace} />
               <PrivateRoute path="/spaces" component={Spaces} />
+
               <PrivateRoute
                 exact
                 path="/:spaceName/projects"
                 component={Projects}
+              />
+              <PrivateRoute
+                exact
+                path="/:spaceName/:projectName/board"
+                component={Kanban}
               />
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
