@@ -12,11 +12,15 @@ import { Formik, Form } from 'formik';
 import { FormikControl } from '../FormikControl';
 import { Stack } from '@chakra-ui/layout';
 
+const initialValues = {
+  name: '',
+};
+
 export const CreateProjectModal = props => {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
-      <Formik>
+      <Formik initialValues={initialValues}>
         <Form>
           <ModalContent>
             <ModalHeader fontWeight="medium">Create a new project.</ModalHeader>
