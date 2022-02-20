@@ -25,16 +25,38 @@ function Task({ task, index }) {
             <Avatar name={task.reporter} size="xs" />
             <Text fontSize="12px">Aug 18 - 20</Text>
           </HStack>
-          <Tag
-            size="sm"
-            my={1}
-            py={1}
-            px={2}
-            variant="subtle"
-            colorScheme="red"
-          >
-            <TagLabel fontSize={9}>Frontend</TagLabel>
-          </Tag>
+          <HStack spacing={2}>
+            <Tag
+              size="sm"
+              my={1}
+              py={1}
+              px={2}
+              variant="subtle"
+              colorScheme="blue"
+            >
+              <TagLabel fontSize={9}>Frontend</TagLabel>
+            </Tag>
+            <Tag
+              size="sm"
+              my={1}
+              py={1}
+              px={2}
+              variant="subtle"
+              colorScheme="purple"
+            >
+              <TagLabel fontSize={9}>Bug</TagLabel>
+            </Tag>
+            <Tag
+              size="sm"
+              my={1}
+              py={1}
+              px={2}
+              variant="subtle"
+              colorScheme="green"
+            >
+              <TagLabel fontSize={9}>Feature</TagLabel>
+            </Tag>
+          </HStack>
         </Box>
       )}
     </Draggable>
