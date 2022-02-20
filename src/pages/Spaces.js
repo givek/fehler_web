@@ -79,7 +79,7 @@ export const Spaces = () => {
             ? spaces.map(space => (
                 <Button
                   as={RouterLink}
-                  to="/projects"
+                  to={`/${space.name}/projects`}
                   key={space.id}
                   bgColor="#fff"
                   w="136px"
