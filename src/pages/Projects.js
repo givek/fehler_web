@@ -2,11 +2,62 @@ import React from 'react';
 import { Navbar } from '../components/Navbar';
 import { Avatar } from '@chakra-ui/avatar';
 import { Box, Stack, Text, Wrap, WrapItem } from '@chakra-ui/layout';
+import { Button } from '@chakra-ui/button';
+import { useDisclosure } from '@chakra-ui/hooks';
+
+import { Link as RouterLink } from 'react-router-dom';
+
+import { useAuth } from '../contexts/auth/authContext';
+import useAuthFehlerApi from '../hooks/useAuthFehlerApi';
+import { CreateProjectModal } from '../components/modals/CreateProjectModal';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 export const Projects = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { userData } = useAuth();
+  const user = userData.currentUser;
+
+  const [projects, setProjects] = React.useState([]);
+
+  const authFehlerApi = useAuthFehlerApi();
+
+  const { spaceName } = useParams();
+  // fetch user projects and set projects state with response.
+  React.useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await authFehlerApi.get(`${spaceName}/projects`);
+
+        console.log(response);
+
+        if (response) {
+          console.log(response.data);
+          setProjects(response.data);
+        }
+      } catch (error) {
+        // TODO: handle errors
+        if (error.response) {
+          console.log(error.response);
+          console.log(error.response.status);
+          console.log(error.response.data.name);
+        }
+        alert(error);
+      }
+    };
+    fetchProjects();
+  }, [authFehlerApi]);
+
   return (
     <Box>
       <Navbar />
+      <CreateProjectModal
+        user={user}
+        // pass setProjects function down to modal component, so it can update projects state.
+        setProjects={setProjects}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
       <Box px="110px" py="48px">
         <Wrap>
           <WrapItem>
@@ -20,15 +71,32 @@ export const Projects = () => {
           <Text fontSize="26px">Projects</Text>
         </Box>
         <Stack direction="row" spacing="12">
-          <Box w="136px" h="104px" boxShadow="md" borderRadius="md">
-            Tuna Project
-          </Box>
-          <Box w="136px" h="104px" boxShadow="md" borderRadius="md">
-            Shibe Project
-          </Box>
-          <Box w="136px" h="104px" boxShadow="md" borderRadius="md">
+          {projects
+            ? projects.map(project => (
+                <Button
+                  as={RouterLink}
+                  to={`${project.name}/board`}
+                  key={project.id}
+                  bgColor="#fff"
+                  w="136px"
+                  h="104px"
+                  boxShadow="md"
+                  borderRadius="md"
+                >
+                  {project.name}
+                </Button>
+              ))
+            : null}
+          <Button
+            bgColor="#fff"
+            w="136px"
+            h="104px"
+            boxShadow="md"
+            borderRadius="md"
+            onClick={onOpen}
+          >
             Add new
-          </Box>
+          </Button>
         </Stack>
       </Box>
     </Box>
