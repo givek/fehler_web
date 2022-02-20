@@ -1,9 +1,10 @@
 import React from 'react';
-import { HStack } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import axios from 'axios';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { QueryCache, useMutation, useQuery, useQueryClient } from 'react-query';
 import Column from '../components/Column';
+import { Navbar } from '../components/Navbar';
 
 function fetchColumns() {
   return axios.get(`http://127.0.0.1:8000/api/MeowSpace/Tuna/columns/`);
@@ -153,13 +154,16 @@ function Kanban() {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <HStack spacing={8} alignItems="flex-start" padding={6}>
-        {query.data?.data.map(column => (
-          <Column key={column.id} column={column} />
-        ))}
-      </HStack>
-    </DragDropContext>
+    <Box>
+      <Navbar />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <HStack spacing={8} alignItems="flex-start" padding={6}>
+          {query.data?.data.map(column => (
+            <Column key={column.id} column={column} />
+          ))}
+        </HStack>
+      </DragDropContext>
+    </Box>
   );
 }
 export default Kanban;
