@@ -49,46 +49,25 @@ const validationSchema = Yup.object({
     .required('Last name is a required field.'),
 });
 
-// const onSubmit = async (data = {}, { setErrors }) => {
-//   const url = 'http://127.0.0.1:8000/api/register';
-//   try {
-//     const res = await fetch(url, {
-//       method: 'post',
-//       headers: {
-//         accept: 'application/json',
-//         'content-type': 'application/json',
-//       },
-//       body: JSON.stringify(data),
-//     });
-//     if (res.status === 201) {
-//       console.log(res.status);
-//     } else {
-//       const response = await res.json();
-//       response['errors'].foreach(({ name, type, message }) =>
-//         setErrors(name, { type, message })
-//       );
-//     }
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
 export const RegisterForm = () => {
   const { state } = useLocation();
   const { register } = useAuth();
   const histroy = useHistory();
 
   // register api does not return token.
+  // TODO: create a registration flow.
+  //  - send registration data -> ask user to validate email -> ...
   const onSubmit = async (data = {}, { setErrors }) => {
     console.log(data);
     const response = await register(data);
     if (response.ok) {
       console.log(response.successMessage);
-      histroy.push(state?.from || '/spaces');
+      histroy.push('/login');
     } else {
       setErrors(response.errors);
     }
   };
+
   return (
     <Formik
       initialValues={initialValues}
