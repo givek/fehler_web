@@ -47,9 +47,8 @@ function Column({ column }) {
       <Heading
         fontFamily="Montserrat"
         mb="3"
-        size="md"
-        textTransform="capitalize"
-        fontSize="16px"
+        size="xs"
+        textTransform="uppercase"
         fontWeight="medium"
       >
         {column.title}
