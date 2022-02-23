@@ -5,13 +5,21 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { QueryCache, useMutation, useQuery, useQueryClient } from 'react-query';
 import Column from '../components/Column';
 import { Navbar } from '../components/Navbar';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
-function fetchColumns() {
-  return axios.get(`http://127.0.0.1:8000/api/MeowSpace/Tuna/columns/`);
+function fetchColumns(spaceName, projectName) {
+  return axios.get(
+    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/columns/`
+  );
   // .then(response => response.data);
 }
 function Kanban() {
-  const query = useQuery('columns', fetchColumns);
+  const params = useParams();
+
+  const query = useQuery(
+    [params.spaceName, params.projectName, 'columns'],
+    () => fetchColumns(params.spaceName, params.projectName)
+  );
   const queryClient = useQueryClient();
   const reorderTasks = useMutation(
     newOrder =>
