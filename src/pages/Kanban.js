@@ -38,88 +38,110 @@ function Kanban() {
       // },
 
       onMutate: async newOrder => {
-        await queryClient.cancelQueries('columns');
+        await queryClient.cancelQueries([
+          params.spaceName,
+          params.projectName,
+          'columns',
+        ]);
         await queryClient.cancelQueries(['tasks', 1]);
 
-        queryClient.setQueryData('columns', oldColumnsData => {
-          if (
-            newOrder.source_droppable_id === newOrder.destination_droppable_id
-          ) {
-            console.log(oldColumnsData.data);
-            const columnIndex = oldColumnsData.data.findIndex(
-              col => col.id === newOrder.source_droppable_id
-            );
-            const column = oldColumnsData.data[columnIndex];
+        queryClient.setQueryData(
+          [params.spaceName, params.projectName, 'columns'],
+          oldColumnsData => {
+            if (
+              newOrder.source_droppable_id === newOrder.destination_droppable_id
+            ) {
+              console.log(oldColumnsData.data);
+              const columnIndex = oldColumnsData.data.findIndex(
+                col => col.id === newOrder.source_droppable_id
+              );
+              const column = oldColumnsData.data[columnIndex];
 
-            const newTaskIds = Array.from(column.tasks);
+              const newTaskIds = Array.from(column.tasks);
 
-            // move the taskId from its old index to its new index.
+              // move the taskId from its old index to its new index.
 
-            // from the index(source.index) remove one item.
-            newTaskIds.splice(newOrder.source_index, 1);
+              // from the index(source.index) remove one item.
+              newTaskIds.splice(newOrder.source_index, 1);
 
-            // from destination index remove nothing and insert draggableId.
-            newTaskIds.splice(newOrder.destination_index, 0, newOrder.task_id);
+              // from destination index remove nothing and insert draggableId.
+              newTaskIds.splice(
+                newOrder.destination_index,
+                0,
+                newOrder.task_id
+              );
 
-            // create new column
-            const newColumn = { ...column, tasks: newTaskIds };
+              // create new column
+              const newColumn = { ...column, tasks: newTaskIds };
 
-            console.log('newCol', newColumn);
+              console.log('newCol', newColumn);
 
-            const newData = [...oldColumnsData.data];
+              const newData = [...oldColumnsData.data];
 
-            newData.splice(columnIndex, 1, newColumn);
+              newData.splice(columnIndex, 1, newColumn);
 
-            console.log(newData);
+              console.log(newData);
 
-            return {
-              ...oldColumnsData,
-              data: newData,
-            };
-          } else {
-            console.log(oldColumnsData.data);
-            const startColumnIndex = oldColumnsData.data.findIndex(
-              col => col.id === newOrder.source_droppable_id
-            );
-            const endColumnIndex = oldColumnsData.data.findIndex(
-              col => col.id === newOrder.destination_droppable_id
-            );
+              return {
+                ...oldColumnsData,
+                data: newData,
+              };
+            } else {
+              console.log(oldColumnsData.data);
+              const startColumnIndex = oldColumnsData.data.findIndex(
+                col => col.id === newOrder.source_droppable_id
+              );
+              const endColumnIndex = oldColumnsData.data.findIndex(
+                col => col.id === newOrder.destination_droppable_id
+              );
 
-            const startColumn = oldColumnsData.data[startColumnIndex];
-            const endColumn = oldColumnsData.data[endColumnIndex];
+              const startColumn = oldColumnsData.data[startColumnIndex];
+              const endColumn = oldColumnsData.data[endColumnIndex];
 
-            const startTaskIds = Array.from(startColumn.tasks);
+              const startTaskIds = Array.from(startColumn.tasks);
 
-            // remove the dragged task from startTaskIds
-            startTaskIds.splice(newOrder.source_index, 1);
+              // remove the dragged task from startTaskIds
+              startTaskIds.splice(newOrder.source_index, 1);
 
-            // create copy of taskIds array of end column
-            const endTaskIds = Array.from(endColumn.tasks);
+              // create copy of taskIds array of end column
+              const endTaskIds = Array.from(endColumn.tasks);
 
-            // add the dropped task to endTaskIds
-            endTaskIds.splice(newOrder.destination_index, 0, newOrder.task_id);
+              // add the dropped task to endTaskIds
+              endTaskIds.splice(
+                newOrder.destination_index,
+                0,
+                newOrder.task_id
+              );
 
-            const newStartColumn = { ...startColumn, tasks: startTaskIds };
-            const newEndColumn = { ...endColumn, tasks: endTaskIds };
+              const newStartColumn = { ...startColumn, tasks: startTaskIds };
+              const newEndColumn = { ...endColumn, tasks: endTaskIds };
 
-            const newData = [...oldColumnsData.data];
+              const newData = [...oldColumnsData.data];
 
-            newData.splice(startColumnIndex, 1, newStartColumn);
-            newData.splice(endColumnIndex, 1, newEndColumn);
+              newData.splice(startColumnIndex, 1, newStartColumn);
+              newData.splice(endColumnIndex, 1, newEndColumn);
 
-            console.log('newData', newData);
-            return {
-              ...oldColumnsData,
-              data: newData,
-            };
+              console.log('newData', newData);
+              return {
+                ...oldColumnsData,
+                data: newData,
+              };
+            }
           }
-        });
+        );
       },
       onError: (_error, _newOrder, context) => {
-        queryClient.setQueriesData('columns', context.oldColumnsData);
+        queryClient.setQueriesData(
+          [params.spaceName, params.projectName, 'columns'],
+          context.oldColumnsData
+        );
       },
       onSettled: () => {
-        queryClient.invalidateQueries('columns');
+        queryClient.invalidateQueries([
+          params.spaceName,
+          params.projectName,
+          'columns',
+        ]);
         queryClient.invalidateQueries(['tasks', 1]);
       },
     }
