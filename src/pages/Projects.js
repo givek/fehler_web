@@ -11,6 +11,7 @@ import { useAuth } from '../contexts/auth/authContext';
 import useAuthFehlerApi from '../hooks/useAuthFehlerApi';
 import { CreateProjectModal } from '../components/modals/CreateProjectModal';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import TasksTable from '../components/TasksTable';
 
 export const Projects = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -98,6 +99,9 @@ export const Projects = () => {
             Add new
           </Button>
         </Stack>
+        <Box my={16} p={2} boxShadow="md" borderRadius="md">
+          <TasksTable />
+        </Box>
       </Box>
     </Box>
   );
