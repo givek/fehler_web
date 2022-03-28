@@ -22,7 +22,7 @@ function Task({ task, index }) {
         >
           <Text fontWeight="medium">{task.name}</Text>
           <HStack my={2} alignItems="center">
-            <Avatar name={task.reporter} size="xs" />
+            <Avatar name={task.reporter_name} size="xs" />
             <Text fontSize="12px">Aug 18 - 20</Text>
           </HStack>
           <HStack spacing={2}>
