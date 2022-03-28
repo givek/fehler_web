@@ -33,7 +33,7 @@ function TasksTable(props) {
           <Th>Date Created</Th>
         </Tr>
       </Thead>
-      <Tbody fontSize="14px">
+      <Tbody fontSize="14px" textTransform="capitalize">
         {tasks.map(task => (
           <Tr key={task.id}>
             <Td>{task.name}</Td>
