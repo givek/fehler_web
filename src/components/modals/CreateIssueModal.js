@@ -11,7 +11,6 @@ import { Button } from '@chakra-ui/button';
 import { Formik, Form } from 'formik';
 import { FormikControl } from '../FormikControl';
 import { Stack } from '@chakra-ui/layout';
-import { Select } from '@chakra-ui/select';
 
 const issueTypeOptions = [{ key: 'Frontend', value: 'frontend' }];
 const projectNameOptions = [
@@ -22,23 +21,46 @@ const issueAssigneeList = [{ key: 'Jon Doe', value: 'jon@email.com' }];
 const issueLabels = [{ key: 'Bug', value: 'bug' }];
 const issueReporter = [{ key: 'Vivek Gandharkar', value: 'vivekg@email.com' }];
 
+const initialValues = {
+  task_name: '',
+  project: '',
+  issue_description: '',
+  issue_type: '',
+  issue_assignee: '',
+  issue_reporter: '',
+  date_due: '',
+};
+
 export const CreateIssueModal = props => {
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose}>
+    <Modal size="xl" isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
-      <Formik>
+      <Formik initialValues={initialValues}>
         <Form>
           <ModalContent>
             <ModalHeader fontWeight="medium">Create a new issue</ModalHeader>
             <ModalBody>
               <Stack spacing={4}>
                 <FormikControl
+                  control="input"
+                  name="task_name"
+                  label="Name"
+                  size="sm"
+                />
+                {/* <FormikControl
                   control="select"
                   name="project"
                   label="Project"
                   options={projectNameOptions}
                   size="sm"
+                /> */}
+                <FormikControl
+                  control="textarea"
+                  name="issue_description"
+                  label="Description"
+                  size="sm"
                 />
+
                 <FormikControl
                   control="select"
                   name="issue_type"
@@ -46,12 +68,7 @@ export const CreateIssueModal = props => {
                   options={issueTypeOptions}
                   size="sm"
                 />
-                <FormikControl
-                  control="textarea"
-                  name="issue_description"
-                  label="Description"
-                  size="sm"
-                />
+
                 <FormikControl
                   control="select"
                   name="issue_assignee"
@@ -72,6 +89,12 @@ export const CreateIssueModal = props => {
                   label="Reporter"
                   options={issueReporter}
                   disabled="disabled"
+                  size="sm"
+                />
+                <FormikControl
+                  control="date"
+                  name="date_due"
+                  label="Due Date"
                   size="sm"
                 />
               </Stack>
