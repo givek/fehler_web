@@ -99,8 +99,13 @@ export const Projects = () => {
             Add new
           </Button>
         </Stack>
-        <Box my={16} p={2} boxShadow="md" borderRadius="md">
-          <TasksTable />
+        <Box my={16}>
+          <Box py={8}>
+            <Text fontSize="26px">Tasks</Text>
+          </Box>
+          <Box p={2} boxShadow="md" borderRadius="md">
+            <TasksTable />
+          </Box>
         </Box>
       </Box>
     </Box>
