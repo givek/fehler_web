@@ -65,7 +65,7 @@ export const Spaces = () => {
                 bg="#E87D65"
                 name={user ? `${user.first_name} ${user.last_name}` : null}
               />
-              <Text fontWeight="semibold">
+              <Text fontWeight="semibold" textTransform="capitalize">
                 {user ? `${user.first_name} ${user.last_name}` : null}
               </Text>
             </Stack>
