@@ -6,6 +6,8 @@ import { QueryCache, useMutation, useQuery, useQueryClient } from 'react-query';
 import Column from '../components/Column';
 import { Navbar } from '../components/Navbar';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { CreateIssueModal } from '../components/modals/CreateIssueModal';
 
 function fetchColumns(spaceName, projectName) {
   return axios.get(
@@ -15,6 +17,9 @@ function fetchColumns(spaceName, projectName) {
 }
 function Kanban() {
   const params = useParams();
+
+  const { isOpen: taskIsOpen, onOpen: taskOnOpen, onClose: taskOnClose } = useDisclosure();
+
 
   const query = useQuery(
     [params.spaceName, params.projectName, 'columns'],
@@ -185,7 +190,13 @@ function Kanban() {
 
   return (
     <Box>
-      <Navbar />
+      <Navbar 
+             isOpen={taskIsOpen}
+             onOpen={taskOnOpen}
+             onClose={taskOnClose} />
+      <CreateIssueModal  isOpen={taskIsOpen}
+        onOpen={taskOnOpen}
+        onClose={taskOnClose} />
       <Box p={16}>
         <DragDropContext onDragEnd={onDragEnd}>
           <HStack spacing={8} alignItems="flex-start">

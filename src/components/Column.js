@@ -74,7 +74,7 @@ function Column({ column }) {
             </Stack>
           )}
         </Droppable>
-        <Button onClick={onOpen}>Add new</Button>
+        {/* <Button onClick={onOpen}>Add new</Button> */}
       </Stack>
     </Box>
   );

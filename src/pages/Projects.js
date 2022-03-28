@@ -12,9 +12,11 @@ import useAuthFehlerApi from '../hooks/useAuthFehlerApi';
 import { CreateProjectModal } from '../components/modals/CreateProjectModal';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import TasksTable from '../components/TasksTable';
+import { CreateIssueModal } from '../components/modals/CreateIssueModal';
 
 export const Projects = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: projectIsOpen, onOpen: projectOnOpen, onClose: projectOnClose } = useDisclosure();
+  const { isOpen: taskIsOpen, onOpen: taskOnOpen, onClose: taskOnClose } = useDisclosure();
   const { userData } = useAuth();
   const user = userData.currentUser;
 
@@ -50,14 +52,22 @@ export const Projects = () => {
 
   return (
     <Box>
-      <Navbar />
+      <Navbar 
+       isOpen={taskIsOpen}
+       onOpen={taskOnOpen}
+       onClose={taskOnClose}
+      />
+      <CreateIssueModal    
+       isOpen={taskIsOpen}
+        onOpen={taskOnOpen}
+        onClose={taskOnClose} />
       <CreateProjectModal
         user={user}
         // pass setProjects function down to modal component, so it can update projects state.
         setProjects={setProjects}
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
+        isOpen={projectIsOpen}
+        onOpen={projectOnOpen}
+        onClose={projectOnClose}
       />
       <Box px="110px" py="48px">
         <Wrap>
@@ -94,7 +104,7 @@ export const Projects = () => {
             h="104px"
             boxShadow="md"
             borderRadius="md"
-            onClick={onOpen}
+            onClick={projectOnOpen}
           >
             Add new
           </Button>

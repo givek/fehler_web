@@ -18,6 +18,14 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import Task from './Task';
+import { Droppable } from 'react-beautiful-dnd';
+
+import { CreateIssueModal } from './modals/CreateIssueModal';
+
+
 const Links = ['Projects', 'People'];
 
 const NavLink = ({ children }) => (
@@ -35,11 +43,12 @@ const NavLink = ({ children }) => (
   </Link>
 );
 
-export const Navbar = () => {
+export const Navbar = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box px="8" boxShadow="md">
+    
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
         <IconButton
           size={'md'}
@@ -59,7 +68,7 @@ export const Navbar = () => {
               <NavLink key={link}>{link}</NavLink>
             ))}
           </HStack>
-          <Button variant={'solid'} colorScheme={'teal'} size={'sm'} mr={4}>
+          <Button onClick={props.onOpen} variant={'solid'} colorScheme={'teal'} size={'sm'} mr={4}>
             Create
           </Button>
         </HStack>
