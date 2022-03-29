@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Heading, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Heading, Stack } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import Task from './Task';
@@ -14,8 +14,6 @@ function fetchTasks(boardId) {
 }
 
 function Column({ column }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const query = useQuery(['tasks', column.board], () =>
     fetchTasks(column.board)
   );
@@ -37,13 +35,6 @@ function Column({ column }) {
 
   return (
     <Box p={3} w={296} bgColor="#EFF1F2" borderRadius="md">
-      <CreateIssueModal
-        // pass setProjects function down to modal component, so it can update projects state.
-        // setProjects={setProjects}
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-      />
       <Heading
         fontFamily="Montserrat"
         mb="3"
@@ -74,7 +65,6 @@ function Column({ column }) {
             </Stack>
           )}
         </Droppable>
-        {/* <Button onClick={onOpen}>Add new</Button> */}
       </Stack>
     </Box>
   );
