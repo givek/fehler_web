@@ -35,7 +35,7 @@ const NavLink = ({ children }) => (
   </Link>
 );
 
-export const Navbar = () => {
+export const Navbar = props => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -59,7 +59,13 @@ export const Navbar = () => {
               <NavLink key={link}>{link}</NavLink>
             ))}
           </HStack>
-          <Button variant={'solid'} colorScheme={'teal'} size={'sm'} mr={4}>
+          <Button
+            onClick={props.onOpen}
+            variant={'solid'}
+            colorScheme={'teal'}
+            size={'sm'}
+            mr={4}
+          >
             Create
           </Button>
         </HStack>

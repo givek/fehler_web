@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, HStack } from '@chakra-ui/react';
+import { Box, HStack, useDisclosure } from '@chakra-ui/react';
 import axios from 'axios';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { QueryCache, useMutation, useQuery, useQueryClient } from 'react-query';
 import Column from '../components/Column';
 import { Navbar } from '../components/Navbar';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { CreateIssueModal } from '../components/modals/CreateIssueModal';
 
 function fetchColumns(spaceName, projectName) {
   return axios.get(
@@ -15,6 +16,7 @@ function fetchColumns(spaceName, projectName) {
 }
 function Kanban() {
   const params = useParams();
+  const createIssueModalDisclosure = useDisclosure();
 
   const query = useQuery(
     [params.spaceName, params.projectName, 'columns'],
@@ -185,7 +187,12 @@ function Kanban() {
 
   return (
     <Box>
-      <Navbar />
+      <Navbar onOpen={createIssueModalDisclosure.onOpen} />
+      <CreateIssueModal
+        isOpen={createIssueModalDisclosure.isOpen}
+        onOpen={createIssueModalDisclosure.onOpen}
+        onClose={createIssueModalDisclosure.onClose}
+      />
       <Box p={16}>
         <DragDropContext onDragEnd={onDragEnd}>
           <HStack spacing={8} alignItems="flex-start">
