@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, HStack, useDisclosure } from '@chakra-ui/react';
+import { Box, HStack, propNames, useDisclosure } from '@chakra-ui/react';
 import axios from 'axios';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { QueryCache, useMutation, useQuery, useQueryClient } from 'react-query';
@@ -7,6 +7,7 @@ import Column from '../components/Column';
 import { Navbar } from '../components/Navbar';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { CreateIssueModal } from '../components/modals/CreateIssueModal';
+import { useAuth } from '../contexts/auth/authContext';
 
 function fetchColumns(spaceName, projectName) {
   return axios.get(
@@ -14,9 +15,16 @@ function fetchColumns(spaceName, projectName) {
   );
   // .then(response => response.data);
 }
-function Kanban() {
+
+// When `Kanban` page is directly accessed with url, state object (state: { id: project.id, projectName: project.name }) is not passed through router.
+function Kanban(props) {
+  console.log(props.location.state);
+
   const params = useParams();
   const createIssueModalDisclosure = useDisclosure();
+
+  const { userData } = useAuth();
+  const user = userData.currentUser;
 
   const query = useQuery(
     [params.spaceName, params.projectName, 'columns'],
@@ -189,6 +197,13 @@ function Kanban() {
     <Box>
       <Navbar onOpen={createIssueModalDisclosure.onOpen} />
       <CreateIssueModal
+        user={user}
+        projects={[
+          {
+            id: props.location.state.id,
+            name: props.location.state.projectName,
+          },
+        ]}
         isOpen={createIssueModalDisclosure.isOpen}
         onOpen={createIssueModalDisclosure.onOpen}
         onClose={createIssueModalDisclosure.onClose}
