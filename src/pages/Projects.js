@@ -50,10 +50,16 @@ export const Projects = () => {
     fetchProjects();
   }, [authFehlerApi]);
 
+  // if (!projects) {
+  //   return <div>Loading...</div>;
+  // }
+
   return (
     <Box>
       <Navbar onOpen={createIssueModalDisclosure.onOpen} />
       <CreateIssueModal
+        user={user}
+        projects={projects}
         isOpen={createIssueModalDisclosure.isOpen}
         onOpen={createIssueModalDisclosure.onOpen}
         onClose={createIssueModalDisclosure.onClose}
@@ -83,7 +89,10 @@ export const Projects = () => {
             ? projects.map(project => (
                 <Button
                   as={RouterLink}
-                  to={`${project.name}/board`}
+                  to={{
+                    pathname: `${project.name}/board`,
+                    state: { id: project.id, projectName: project.name },
+                  }}
                   key={project.id}
                   bgColor="#fff"
                   w="136px"
