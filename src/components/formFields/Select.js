@@ -14,8 +14,9 @@ export const Select = ({ name, label, options, helpText, ...rest }) => {
       {({ field, form }) => (
         <FormControl isInvalid={form.errors[name] && form.touched[name]}>
           <FormLabel htmlFor={name}>{label}</FormLabel>
-          <ChakraSelect id={name} {...rest} {...field}>
-            {options.map(option => (
+          <ChakraSelect id={name} {...field} {...rest}>
+            <option key={1}>Please select an option</option>
+            {options.map((option, index) => (
               <option key={option.value} value={option.value}>
                 {option.key}
               </option>
