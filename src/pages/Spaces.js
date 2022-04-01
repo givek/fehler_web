@@ -43,8 +43,8 @@ export const Spaces = () => {
 
   return (
     <Box px="56px" py="48px">
-      {JSON.stringify(user)}
-      {JSON.stringify(spaces)}
+      {/* {JSON.stringify(user)}
+      {JSON.stringify(spaces)} */}
       <CreateSpaceModal
         user={user}
         // pass setSpaces function down to modal component, so it can update spaces state.
@@ -103,7 +103,7 @@ export const Spaces = () => {
           </Button>
         </Stack>
       </Box>
-      <pre>{JSON.stringify(userData)}</pre>
+      {/* <pre>{JSON.stringify(userData)}</pre> */}
     </Box>
   );
 };
