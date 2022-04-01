@@ -1,5 +1,14 @@
 import React from 'react';
-import { Box, HStack, propNames, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  HStack,
+  useDisclosure,
+  Stack,
+  Text,
+  Wrap,
+  WrapItem,
+  Avatar,
+} from '@chakra-ui/react';
 import axios from 'axios';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { QueryCache, useMutation, useQuery, useQueryClient } from 'react-query';
@@ -9,9 +18,20 @@ import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { CreateIssueModal } from '../components/modals/CreateIssueModal';
 import { useAuth } from '../contexts/auth/authContext';
 
-function fetchColumns(spaceName, projectName) {
+function fetchColumns(spaceName, projectName, token) {
   return axios.get(
-    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/columns/`
+    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/columns/`,
+    {
+      headers: { Authorization: `Token ${token}` },
+    }
+  );
+}
+function fetchProject(spaceName, projectName, token) {
+  return axios.get(
+    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/info/`,
+    {
+      headers: { Authorization: `Token ${token}` },
+    }
   );
   // .then(response => response.data);
 }
@@ -19,16 +39,19 @@ function fetchColumns(spaceName, projectName) {
 // When `Kanban` page is directly accessed with url, state object (state: { id: project.id, projectName: project.name }) is not passed through router.
 function Kanban(props) {
   console.log(props.location.state);
-
+  const token = window.localStorage.getItem('userToken');
   const params = useParams();
   const createIssueModalDisclosure = useDisclosure();
 
   const { userData } = useAuth();
   const user = userData.currentUser;
+  const project = useQuery([params.spaceName, params.projectName, 'info'], () =>
+    fetchProject(params.spaceName, params.projectName, token)
+  );
 
   const query = useQuery(
     [params.spaceName, params.projectName, 'columns'],
-    () => fetchColumns(params.spaceName, params.projectName)
+    () => fetchColumns(params.spaceName, params.projectName, token)
   );
   const queryClient = useQueryClient();
   const reorderTasks = useMutation(
@@ -157,9 +180,11 @@ function Kanban(props) {
     }
   );
 
-  if (query.isLoading) {
+  if (query.isLoading || project.isLoading) {
     return <div>Loading...</div>;
   }
+
+  console.log('project infor', project.data.data);
 
   function onDragEnd(result) {
     // console.log('ondragend');
@@ -200,8 +225,8 @@ function Kanban(props) {
         user={user}
         projects={[
           {
-            id: props.location.state.id,
-            name: props.location.state.projectName,
+            id: project.data.data.id,
+            name: project.data.data.name,
           },
         ]}
         isOpen={createIssueModalDisclosure.isOpen}
@@ -209,13 +234,31 @@ function Kanban(props) {
         onClose={createIssueModalDisclosure.onClose}
       />
       <Box p={16}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <HStack spacing={8} alignItems="flex-start">
-            {query.data?.data.map(column => (
-              <Column key={column.id} column={column} />
-            ))}
-          </HStack>
-        </DragDropContext>
+        <Wrap>
+          <WrapItem>
+            <Stack direction="row" alignItems="center" spacing="4">
+              <Avatar
+                size="lg"
+                bg="#E87D65"
+                color="#fff"
+                name={project.data.data.name}
+              />
+              <Text fontWeight="semibold">{project.data.data.name}</Text>
+            </Stack>
+          </WrapItem>
+        </Wrap>
+        <Box px={8}>
+          <Box py={8}>
+            <Text fontSize="26px">Kanban Board</Text>
+          </Box>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <HStack spacing={8} alignItems="flex-start">
+              {query.data?.data.map(column => (
+                <Column key={column.id} column={column} />
+              ))}
+            </HStack>
+          </DragDropContext>
+        </Box>
       </Box>
     </Box>
   );

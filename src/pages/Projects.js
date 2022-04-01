@@ -66,6 +66,7 @@ export const Projects = () => {
       />
       <CreateProjectModal
         user={user}
+        spaceName={spaceName}
         // pass setProjects function down to modal component, so it can update projects state.
         setProjects={setProjects}
         isOpen={createProjectModalDisclosure.isOpen}
@@ -76,8 +77,8 @@ export const Projects = () => {
         <Wrap>
           <WrapItem>
             <Stack direction="row" alignItems="center" spacing="4">
-              <Avatar size="lg" bg="#E87D65" color="#fff" name="Tuna" />
-              <Text fontWeight="semibold">Tuna</Text>
+              <Avatar size="lg" bg="#E87D65" color="#fff" name={spaceName} />
+              <Text fontWeight="semibold">{spaceName}</Text>
             </Stack>
           </WrapItem>
         </Wrap>
@@ -89,10 +90,7 @@ export const Projects = () => {
             ? projects.map(project => (
                 <Button
                   as={RouterLink}
-                  to={{
-                    pathname: `${project.name}/board`,
-                    state: { id: project.id, projectName: project.name },
-                  }}
+                  to={`${project.name}/board`}
                   key={project.id}
                   bgColor="#fff"
                   w="136px"
