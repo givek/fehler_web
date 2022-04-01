@@ -32,8 +32,9 @@ export async function register(data, dispatchToken) {
       data
     );
 
-    if (response.status === 200) {
-      dispatchToken({ type: SET_TOKEN, token: response.data.token });
+    if (response.status === 201) {
+      // console.log('response.data.token', response.data.token);
+      // dispatchToken({ type: SET_TOKEN, token: response.data.token });
       return {
         ok: true,
         successMessage: 'Register Successfull.',
@@ -43,11 +44,11 @@ export async function register(data, dispatchToken) {
   } catch (error) {
     if (error.response) {
       console.log(error.response.data);
-      // return {
-      //   ok: false,
-      //   successMessage: null,
-      //   errors: error.response.data.errors,
-      // };
+      return {
+        ok: false,
+        successMessage: null,
+        errors: error.response.data,
+      };
     }
     alert(error);
   }

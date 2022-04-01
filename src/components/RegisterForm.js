@@ -50,7 +50,7 @@ const validationSchema = Yup.object({
 });
 
 export const RegisterForm = () => {
-  const { state } = useLocation();
+  // const { state } = useLocation();
   const { register } = useAuth();
   const histroy = useHistory();
 
@@ -60,9 +60,11 @@ export const RegisterForm = () => {
   const onSubmit = async (data = {}, { setErrors }) => {
     console.log(data);
     const response = await register(data);
+
+    console.log(response);
     if (response.ok) {
       console.log(response.successMessage);
-      histroy.push('/login');
+      histroy.push('/register-success');
     } else {
       setErrors(response.errors);
     }

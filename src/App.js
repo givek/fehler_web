@@ -13,6 +13,7 @@ import { Projects } from './pages/Projects';
 import { PrivateRoute } from './PrivateRoute';
 import { AuthProvider } from './contexts/auth/authContext';
 import Kanban from './pages/Kanban';
+import RegisterSuccess from './components/dialogs/RegisterSuccess';
 
 const theme = extendTheme({
   fonts: {
@@ -32,6 +33,8 @@ function App() {
           <AuthProvider>
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
+            <Route path="/register-success" component={RegisterSuccess} />
+
             <QueryClientProvider client={queryClient}>
               <PrivateRoute path="/createspace" component={CreateSpace} />
               <PrivateRoute path="/spaces" component={Spaces} />
