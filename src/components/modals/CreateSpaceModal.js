@@ -31,6 +31,7 @@ export const CreateSpaceModal = props => {
 
       if (response) {
         props.setSpaces(response.data);
+        props.onClose();
       }
     } catch (error) {
       // TODO: handle errors

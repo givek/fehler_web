@@ -84,6 +84,7 @@ export const CreateIssueModal = props => {
 
       if (response) {
         // props.setProjects(response.data);
+        props.onClose();
         queryClient.invalidateQueries('tasks');
         queryClient.invalidateQueries('MeowSpace', 'Tuna', 'columns');
       }

@@ -38,6 +38,7 @@ export const CreateProjectModal = props => {
 
       if (response) {
         props.setProjects(response.data);
+        props.onClose();
       }
     } catch (error) {
       // TODO: handle errors
