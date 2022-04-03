@@ -13,7 +13,7 @@ function fetchTasks(boardId) {
   );
 }
 
-function Column({ column }) {
+function Column({ column, onOpen, setClickedTask }) {
   const query = useQuery(['tasks', column.board], () =>
     fetchTasks(column.board)
   );
@@ -56,6 +56,8 @@ function Column({ column }) {
             >
               {column.tasks.map((taskId, index) => (
                 <Task
+                  setClickedTask={setClickedTask}
+                  onOpen={onOpen}
                   key={taskId}
                   task={tasks[tasks.findIndex(task => task.id === taskId)]}
                   index={index}

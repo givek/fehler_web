@@ -9,11 +9,15 @@ const taskPriority = {
   4: { color: 'red.400' },
 };
 
-function Task({ task, index }) {
+function Task({ task, index, onOpen, setClickedTask }) {
   return (
     <Draggable draggableId={`task-${task.id}`} index={index}>
       {(provided, snapshot) => (
         <Box
+          onClick={() => {
+            setClickedTask(task);
+            onOpen();
+          }}
           borderTop="8px"
           borderStyle="solid"
           borderColor={taskPriority[task.priority].color}

@@ -17,6 +17,7 @@ import { Navbar } from '../components/Navbar';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { CreateIssueModal } from '../components/modals/CreateIssueModal';
 import { useAuth } from '../contexts/auth/authContext';
+import IssueDetailsModal from '../components/modals/IssueDetailsModal';
 
 function fetchColumns(spaceName, projectName, token) {
   return axios.get(
@@ -42,6 +43,8 @@ function Kanban(props) {
   const token = window.localStorage.getItem('userToken');
   const params = useParams();
   const createIssueModalDisclosure = useDisclosure();
+  const issueDetailsModalDisclosure = useDisclosure();
+  const [clickedTask, setClickedTask] = React.useState(null);
 
   const { userData } = useAuth();
   const user = userData.currentUser;
@@ -236,6 +239,19 @@ function Kanban(props) {
         onOpen={createIssueModalDisclosure.onOpen}
         onClose={createIssueModalDisclosure.onClose}
       />
+      <IssueDetailsModal
+        task={clickedTask}
+        user={user}
+        projects={[
+          {
+            id: project.data.data.id,
+            name: project.data.data.name,
+          },
+        ]}
+        isOpen={issueDetailsModalDisclosure.isOpen}
+        onOpen={issueDetailsModalDisclosure.onOpen}
+        onClose={issueDetailsModalDisclosure.onClose}
+      />
       <Box p={16}>
         <Wrap>
           <WrapItem>
@@ -257,7 +273,12 @@ function Kanban(props) {
           <DragDropContext onDragEnd={onDragEnd}>
             <HStack spacing={8} alignItems="flex-start">
               {query.data?.data.map(column => (
-                <Column key={column.id} column={column} />
+                <Column
+                  setClickedTask={setClickedTask}
+                  onOpen={issueDetailsModalDisclosure.onOpen}
+                  key={column.id}
+                  column={column}
+                />
               ))}
             </HStack>
           </DragDropContext>
