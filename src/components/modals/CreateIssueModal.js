@@ -8,13 +8,20 @@ import {
   ModalFooter,
 } from '@chakra-ui/modal';
 import { Button } from '@chakra-ui/button';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import { FormikControl } from '../FormikControl';
 import { Stack } from '@chakra-ui/layout';
 import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
 import { useQueryClient } from 'react-query';
 
 const issueTypeOptions = [{ key: 'Frontend', value: 'frontend' }];
+
+const priorityLevel = [
+  { key: 'Urgent', value: 4 },
+  { key: 'High', value: 3 },
+  { key: 'Medium', value: 2 },
+  { key: 'Low', value: 1 },
+];
 
 const issueAssigneeList = [{ key: 'Jon Doe', value: 'jon@email.com' }];
 const issueLabels = [{ key: 'Bug', value: 'bug' }];
@@ -42,6 +49,7 @@ export const CreateIssueModal = props => {
   const initialValues = {
     name: '',
     project: 0,
+    priority: 1,
     description: '',
     // issue_type: '',
     // issue_assignee: '',
@@ -108,6 +116,14 @@ export const CreateIssueModal = props => {
                   size="sm"
                 />
 
+                <FormikControl
+                  control="select"
+                  name="priority"
+                  label="Priority"
+                  options={priorityLevel}
+                  size="sm"
+                />
+
                 {/* <FormikControl
                   control="select"
                   name="issue_type"
@@ -130,6 +146,7 @@ export const CreateIssueModal = props => {
                   options={issueLabels}
                   size="sm"
                 /> */}
+
                 <FormikControl
                   control="select"
                   name="reporter"

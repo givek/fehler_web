@@ -2,6 +2,13 @@ import React from 'react';
 import { Box, Text, HStack, Avatar, Tag, TagLabel } from '@chakra-ui/react';
 import { Draggable } from 'react-beautiful-dnd';
 
+const taskPriority = {
+  1: { color: 'green.400' },
+  2: { color: 'yellow.400' },
+  3: { color: 'orange.400' },
+  4: { color: 'red.400' },
+};
+
 function Task({ task, index }) {
   return (
     <Draggable draggableId={`task-${task.id}`} index={index}>
@@ -9,7 +16,7 @@ function Task({ task, index }) {
         <Box
           borderTop="8px"
           borderStyle="solid"
-          borderColor="red.400"
+          borderColor={taskPriority[task.priority].color}
           borderRadius="md"
           py={2}
           px={4}
