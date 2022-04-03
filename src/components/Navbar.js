@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import {
   Box,
   Flex,
@@ -17,10 +17,10 @@ import {
   Stack,
   Heading,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
-const Links = ['Projects', 'People'];
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { Link as RouterLink } from 'react-router-dom';
 
-const NavLink = ({ children }) => (
+const NavLink = props => (
   <Link
     px={2}
     py={1}
@@ -29,14 +29,20 @@ const NavLink = ({ children }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}
+    as={RouterLink}
+    to={props.url}
   >
-    {children}
+    {props.children}
   </Link>
 );
 
 export const Navbar = props => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const Links = [
+    { name: 'Projects', url: `/${props.spaceName}/projects` },
+    { name: 'People', url: `/${props.spaceName}/people` },
+  ];
 
   return (
     <Box px="8" boxShadow="md">
@@ -56,7 +62,9 @@ export const Navbar = props => {
           </Box>
           <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
             {Links.map(link => (
-              <NavLink key={link}>{link}</NavLink>
+              <NavLink key={link.name} url={link.url}>
+                {link.name}
+              </NavLink>
             ))}
           </HStack>
           <Button

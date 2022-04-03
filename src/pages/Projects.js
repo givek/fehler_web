@@ -56,7 +56,10 @@ export const Projects = () => {
 
   return (
     <Box>
-      <Navbar onOpen={createIssueModalDisclosure.onOpen} />
+      <Navbar
+        spaceName={spaceName}
+        onOpen={createIssueModalDisclosure.onOpen}
+      />
       <CreateIssueModal
         user={user}
         projects={projects}

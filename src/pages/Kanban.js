@@ -220,7 +220,10 @@ function Kanban(props) {
 
   return (
     <Box>
-      <Navbar onOpen={createIssueModalDisclosure.onOpen} />
+      <Navbar
+        spaceName={project.data.data.space}
+        onOpen={createIssueModalDisclosure.onOpen}
+      />
       <CreateIssueModal
         user={user}
         projects={[
