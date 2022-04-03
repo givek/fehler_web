@@ -13,6 +13,7 @@ import { FormikControl } from '../FormikControl';
 import { Stack } from '@chakra-ui/layout';
 import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
 import { useQueryClient } from 'react-query';
+import * as Yup from 'yup';
 
 const issueTypeOptions = [{ key: 'Frontend', value: 'frontend' }];
 
@@ -26,6 +27,15 @@ const priorityLevel = [
 const issueAssigneeList = [{ key: 'Jon Doe', value: 'jon@email.com' }];
 const issueLabels = [{ key: 'Bug', value: 'bug' }];
 
+// prevent form submission on enter
+function onKeyDown(keyEvent) {
+  if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+    keyEvent.preventDefault();
+  }
+}
+const validationSchema = Yup.object({
+  tags: Yup.array().max(3),
+});
 // When `Kanban` page is directly accessed with url, state object (state: { id: project.id, projectName: project.name }) is not passed through router.
 export const CreateIssueModal = props => {
   console.log(props.user.email);
@@ -53,6 +63,7 @@ export const CreateIssueModal = props => {
     description: '',
     // issue_type: '',
     // issue_assignee: '',
+    tags: [],
     reporter: props.user.id,
     date_due: '',
   };
@@ -90,8 +101,12 @@ export const CreateIssueModal = props => {
   return (
     <Modal size="xl" isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        <Form>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        <Form onKeyDown={onKeyDown}>
           <ModalContent>
             <ModalHeader fontWeight="medium">Create a new issue</ModalHeader>
             <ModalBody>
@@ -121,6 +136,13 @@ export const CreateIssueModal = props => {
                   name="priority"
                   label="Priority"
                   options={priorityLevel}
+                  size="sm"
+                />
+
+                <FormikControl
+                  control="tag-input"
+                  name="tags"
+                  label="Tags"
                   size="sm"
                 />
 

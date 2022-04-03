@@ -33,36 +33,19 @@ function Task({ task, index }) {
             <Text fontSize="12px">{task.date_due}</Text>
           </HStack>
           <HStack spacing={2}>
-            <Tag
-              size="sm"
-              my={1}
-              py={1}
-              px={2}
-              variant="subtle"
-              colorScheme="blue"
-            >
-              <TagLabel fontSize={9}>Frontend</TagLabel>
-            </Tag>
-            <Tag
-              size="sm"
-              my={1}
-              py={1}
-              px={2}
-              variant="subtle"
-              colorScheme="purple"
-            >
-              <TagLabel fontSize={9}>Bug</TagLabel>
-            </Tag>
-            <Tag
-              size="sm"
-              my={1}
-              py={1}
-              px={2}
-              variant="subtle"
-              colorScheme="green"
-            >
-              <TagLabel fontSize={9}>Feature</TagLabel>
-            </Tag>
+            {task.tags.map((tag, index) => (
+              <Tag
+                size="sm"
+                my={1}
+                py={1}
+                px={2}
+                variant="subtle"
+                colorScheme="purple"
+                key={index}
+              >
+                <TagLabel fontSize={9}>{tag}</TagLabel>
+              </Tag>
+            ))}
           </HStack>
         </Box>
       )}
