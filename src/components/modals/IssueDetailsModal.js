@@ -58,27 +58,27 @@ function IssueDetailsModal(props) {
     },
   ];
 
-  const initialValues = {
-    name: '',
-    project: 0,
-    priority: 1,
-    description: '',
-    // issue_type: '',
-    // issue_assignee: '',
-    tags: [],
-    reporter: props.user.id,
-    date_due: '',
-  };
+  // const initialValues = {
+  //   name: '',
+  //   project: 0,
+  //   priority: 1,
+  //   description: '',
+  //   // issue_type: '',
+  //   // issue_assignee: '',
+  //   tags: [],
+  //   reporter: props.user.id,
+  //   date_due: '',
+  // };
 
   const authFehlerApi = useAuthFehlerApi();
   const queryClient = useQueryClient();
 
   const onSubmit = async (data = {}, { setErrors }) => {
-    console.log(`form data`, data);
+    console.log(`detail form data`, JSON.stringify(data));
 
     try {
-      const response = await authFehlerApi.post(
-        `MeowSpace/Tuna/create_task/`,
+      const response = await authFehlerApi.put(
+        `update_task/${props.task.id}/`,
         data
       );
 
@@ -100,9 +100,11 @@ function IssueDetailsModal(props) {
       alert(error);
     }
   };
-  if (!props.task) {
-    return <div>Loading...</div>;
-  }
+  // if (!props.task) {
+  //   return <div>Loading...</div>;
+  // }
+
+  console.log('props.task', props.task);
   return (
     <Modal size="xl" isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
@@ -113,7 +115,7 @@ function IssueDetailsModal(props) {
       >
         <Form onKeyDown={onKeyDown}>
           <ModalContent>
-            <ModalHeader fontWeight="medium">Create a new issue</ModalHeader>
+            <ModalHeader fontWeight="medium">Issue Details</ModalHeader>
             <ModalBody>
               <Stack spacing={4}>
                 <FormikControl
@@ -196,7 +198,7 @@ function IssueDetailsModal(props) {
                 Close
               </Button>
               <Button type="submit" size="sm" colorScheme="blue">
-                Create
+                Update
               </Button>
             </ModalFooter>
           </ModalContent>
