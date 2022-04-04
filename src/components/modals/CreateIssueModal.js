@@ -12,8 +12,9 @@ import { Formik, Form } from 'formik';
 import { FormikControl } from '../FormikControl';
 import { Stack } from '@chakra-ui/layout';
 import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
-import { useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const issueTypeOptions = [{ key: 'Frontend', value: 'frontend' }];
 
@@ -24,7 +25,6 @@ const priorityLevel = [
   { key: 'Low', value: 1 },
 ];
 
-const issueAssigneeList = [{ key: 'Jon Doe', value: 'jon@email.com' }];
 const issueLabels = [{ key: 'Bug', value: 'bug' }];
 
 // prevent form submission on enter
@@ -36,11 +36,23 @@ function onKeyDown(keyEvent) {
 const validationSchema = Yup.object({
   tags: Yup.array().max(3),
 });
+
+function fetchProjectMembers(spaceName, token) {
+  return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-members/`, {
+    headers: { Authorization: `Token ${token}` },
+  });
+}
+
 // When `Kanban` page is directly accessed with url, state object (state: { id: project.id, projectName: project.name }) is not passed through router.
 export const CreateIssueModal = props => {
   console.log(props.user.email);
 
-  console.log('project', props.projects);
+  const firstProject = props.projects[0];
+
+  const userToken = localStorage.getItem('userToken');
+  const spaceMembers = useQuery(['space-members', props.spaceName], () =>
+    fetchProjectMembers(props.spaceName, userToken)
+  );
 
   const projectNameOptions = props.projects.map(project => ({
     key: project.name,
@@ -55,16 +67,21 @@ export const CreateIssueModal = props => {
       value: props.user.id,
     },
   ];
+  const issueAssigneeList = spaceMembers.data?.data?.map(spaceMember => ({
+    key: `${spaceMember.first_name} ${spaceMember.last_name}`,
+    value: spaceMember.id,
+  }));
 
   const initialValues = {
     name: '',
-    project: 0,
+    project: firstProject ? firstProject.id : '',
     priority: 1,
     description: '',
     // issue_type: '',
     // issue_assignee: '',
     tags: [],
     reporter: props.user.id,
+    assignee: '',
     date_due: '',
   };
 
@@ -176,6 +193,13 @@ export const CreateIssueModal = props => {
                   label="Reporter"
                   options={issueReporter}
                   disabled="disabled"
+                  size="sm"
+                />
+                <FormikControl
+                  control="select"
+                  name="assignee"
+                  label="Assignee"
+                  options={issueAssigneeList}
                   size="sm"
                 />
 

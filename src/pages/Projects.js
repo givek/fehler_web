@@ -63,6 +63,7 @@ export const Projects = () => {
       <CreateIssueModal
         user={user}
         projects={projects}
+        spaceName={spaceName}
         isOpen={createIssueModalDisclosure.isOpen}
         onOpen={createIssueModalDisclosure.onOpen}
         onClose={createIssueModalDisclosure.onClose}

@@ -229,6 +229,7 @@ function Kanban(props) {
       />
       <CreateIssueModal
         user={user}
+        spaceName={project.data.data.space}
         projects={[
           {
             id: project.data.data.id,
@@ -241,6 +242,7 @@ function Kanban(props) {
       />
       <IssueDetailsModal
         task={clickedTask}
+        spaceName={project.data.data.space}
         user={user}
         projects={[
           {

@@ -12,8 +12,9 @@ import { Formik, Form } from 'formik';
 import { FormikControl } from '../FormikControl';
 import { Stack } from '@chakra-ui/layout';
 import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
-import { useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const issueTypeOptions = [{ key: 'Frontend', value: 'frontend' }];
 
@@ -23,7 +24,11 @@ const priorityLevel = [
   { key: 'Medium', value: 2 },
   { key: 'Low', value: 1 },
 ];
-
+function fetchProjectMembers(spaceName, token) {
+  return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-members/`, {
+    headers: { Authorization: `Token ${token}` },
+  });
+}
 const issueAssigneeList = [{ key: 'Jon Doe', value: 'jon@email.com' }];
 const issueLabels = [{ key: 'Bug', value: 'bug' }];
 
@@ -44,9 +49,18 @@ function IssueDetailsModal(props) {
 
   console.log('issuedetail task', props.task);
 
+  const userToken = localStorage.getItem('userToken');
+  const spaceMembers = useQuery(['space-members', props.spaceName], () =>
+    fetchProjectMembers(props.spaceName, userToken)
+  );
   const projectNameOptions = props.projects.map(project => ({
     key: project.name,
     value: project.id,
+  }));
+
+  const issueAssigneeList = spaceMembers.data?.data?.map(spaceMember => ({
+    key: `${spaceMember.first_name} ${spaceMember.last_name}`,
+    value: spaceMember.id,
   }));
 
   console.log(projectNameOptions);
@@ -184,7 +198,13 @@ function IssueDetailsModal(props) {
                   disabled="disabled"
                   size="sm"
                 />
-
+                <FormikControl
+                  control="select"
+                  name="assignee"
+                  label="Assignee"
+                  options={issueAssigneeList}
+                  size="sm"
+                />
                 <FormikControl
                   control="date"
                   name="date_due"
