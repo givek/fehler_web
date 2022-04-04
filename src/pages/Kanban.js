@@ -271,7 +271,7 @@ function Kanban(props) {
             <Text fontSize="26px">Kanban Board</Text>
           </Box>
           <DragDropContext onDragEnd={onDragEnd}>
-            <HStack spacing={8} alignItems="flex-start">
+            <HStack spacing={10} alignItems="flex-start">
               {query.data?.data.map(column => (
                 <Column
                   setClickedTask={setClickedTask}
