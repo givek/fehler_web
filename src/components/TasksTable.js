@@ -39,8 +39,20 @@ function TasksTable(props) {
             <Td>{task.name}</Td>
             <Td>{task.column_title}</Td>
             <Td>{task.assignee_name}</Td>
-            <Td>{task.date_due}</Td>
-            <Td>{task.date_created}</Td>
+            <Td>
+              {new Date(task.date_due).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </Td>
+            <Td>
+              {new Date(task.date_created).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </Td>
           </Tr>
         ))}
       </Tbody>
