@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { CreateSpace } from './pages/CreateSpace';
+import SpaceMembers from './pages/SpaceMembers';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Fonts } from './components/Fonts';
@@ -38,6 +39,11 @@ function App() {
             <QueryClientProvider client={queryClient}>
               <PrivateRoute path="/createspace" component={CreateSpace} />
               <PrivateRoute path="/spaces" component={Spaces} />
+              <PrivateRoute
+                path="/:spaceName/people"
+                exact
+                component={SpaceMembers}
+              />
 
               <PrivateRoute
                 exact
