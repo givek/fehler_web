@@ -15,6 +15,8 @@ import { PrivateRoute } from './PrivateRoute';
 import { AuthProvider } from './contexts/auth/authContext';
 import Kanban from './pages/Kanban';
 import RegisterSuccess from './components/dialogs/RegisterSuccess';
+import Risks from './pages/Risks';
+import RiskMatrix from './pages/RiskMatrix';
 
 const theme = extendTheme({
   fonts: {
@@ -54,6 +56,14 @@ function App() {
                 exact
                 path="/:spaceName/:projectName/board"
                 component={Kanban}
+              />
+              <PrivateRoute
+                path="/:spaceName/:projectName/risks"
+                component={Risks}
+              />
+              <PrivateRoute
+                path="/:spaceName/:projectName/risk-matrix"
+                component={RiskMatrix}
               />
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>

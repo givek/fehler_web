@@ -2,16 +2,21 @@ import React from 'react';
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td } from '@chakra-ui/react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 
-function fetchTasks(token) {
-  return axios.get(`http://127.0.0.1:8000/api/MeowSpace/Tuna/user_tasks/`, {
+function fetchTasks(token, spaceName) {
+  return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-tasks/`, {
     headers: { Authorization: `Token ${token}` },
   });
 }
 
 function TasksTable(props) {
+  const params = useParams();
+
   const userToken = localStorage.getItem('userToken');
-  const query = useQuery(['tasks', userToken], () => fetchTasks(userToken));
+  const query = useQuery(['tasks', userToken, params.spaceName], () =>
+    fetchTasks(userToken, params.spaceName)
+  );
 
   if (query.isLoading) {
     return <div>Loading....</div>;

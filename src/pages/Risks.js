@@ -13,9 +13,10 @@ import { CreateProjectModal } from '../components/modals/CreateProjectModal';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import TasksTable from '../components/TasksTable';
 import { CreateIssueModal } from '../components/modals/CreateIssueModal';
+import RiskRegister from '../components/RiskRegister';
 
-export const Projects = () => {
-  const createProjectModalDisclosure = useDisclosure();
+function Risks() {
+  // const createProjectModalDisclosure = useDisclosure();
   const createIssueModalDisclosure = useDisclosure();
   const { userData } = useAuth();
   const user = userData.currentUser;
@@ -24,7 +25,7 @@ export const Projects = () => {
 
   const authFehlerApi = useAuthFehlerApi();
 
-  const { spaceName } = useParams();
+  const { projectName, spaceName } = useParams();
   // fetch user projects and set projects state with response.
   React.useEffect(() => {
     const fetchProjects = async () => {
@@ -58,6 +59,7 @@ export const Projects = () => {
     <Box>
       <Navbar
         spaceName={spaceName}
+        projectName={projectName}
         onOpen={createIssueModalDisclosure.onOpen}
       />
       <CreateIssueModal
@@ -68,64 +70,28 @@ export const Projects = () => {
         onOpen={createIssueModalDisclosure.onOpen}
         onClose={createIssueModalDisclosure.onClose}
       />
-      <CreateProjectModal
-        user={user}
-        spaceName={spaceName}
-        // pass setProjects function down to modal component, so it can update projects state.
-        setProjects={setProjects}
-        isOpen={createProjectModalDisclosure.isOpen}
-        onOpen={createProjectModalDisclosure.onOpen}
-        onClose={createProjectModalDisclosure.onClose}
-      />
+
       <Box px="110px" py="48px">
         <Wrap>
           <WrapItem>
             <Stack direction="row" alignItems="center" spacing="4">
-              <Avatar size="lg" name={spaceName} />
-              <Text fontWeight="semibold">{spaceName}</Text>
+              <Avatar size="lg" bg="#E87D65" color="#fff" name={projectName} />
+              <Text fontWeight="semibold">{projectName}</Text>
             </Stack>
           </WrapItem>
         </Wrap>
-        <Box py="48px">
-          <Text fontSize="26px">Projects</Text>
-        </Box>
-        <Stack direction="row" spacing="12">
-          {projects
-            ? projects.map(project => (
-                <Button
-                  as={RouterLink}
-                  to={`${project.name}/board`}
-                  key={project.id}
-                  bgColor="#fff"
-                  w="136px"
-                  h="104px"
-                  boxShadow="md"
-                  borderRadius="md"
-                >
-                  {project.name}
-                </Button>
-              ))
-            : null}
-          <Button
-            bgColor="#fff"
-            w="136px"
-            h="104px"
-            boxShadow="md"
-            borderRadius="md"
-            onClick={createProjectModalDisclosure.onOpen}
-          >
-            Add new
-          </Button>
-        </Stack>
+
         <Box my={16}>
           <Box py={8}>
-            <Text fontSize="26px">Tasks</Text>
+            <Text fontSize="26px">Risk Register</Text>
           </Box>
           <Box p={2} boxShadow="md" borderRadius="md">
-            <TasksTable />
+            <RiskRegister />
           </Box>
         </Box>
       </Box>
     </Box>
   );
-};
+}
+
+export default Risks;

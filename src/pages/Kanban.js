@@ -226,6 +226,7 @@ function Kanban(props) {
       <Navbar
         spaceName={project.data.data.space}
         onOpen={createIssueModalDisclosure.onOpen}
+        projectName={params.projectName}
       />
       <CreateIssueModal
         user={user}
