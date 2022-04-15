@@ -26,8 +26,8 @@ function SpaceMembers() {
   return (
     <Box>
       <Navbar
-      // spaceName={spaceName}
-      // onOpen={createIssueModalDisclosure.onOpen}
+        spaceName={params.spaceName}
+        // onOpen={createIssueModalDisclosure.onOpen}
       />
       {/* <CreateIssueModal
         user={user}

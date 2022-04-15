@@ -79,7 +79,7 @@ function Kanban(props) {
           params.projectName,
           'columns',
         ]);
-        await queryClient.cancelQueries(['tasks', 1]);
+        await queryClient.cancelQueries(['tasks', query.data?.data[0].board]);
 
         queryClient.setQueryData(
           [params.spaceName, params.projectName, 'columns'],
@@ -123,6 +123,7 @@ function Kanban(props) {
                 data: newData,
               };
             } else {
+              console.log('newordr', newOrder);
               console.log(oldColumnsData.data);
               const startColumnIndex = oldColumnsData.data.findIndex(
                 col => col.id === newOrder.source_droppable_id
@@ -131,6 +132,8 @@ function Kanban(props) {
                 col => col.id === newOrder.destination_droppable_id
               );
 
+              console.log('startColumnIndex', startColumnIndex);
+              console.log('endColumnIndex', endColumnIndex);
               const startColumn = oldColumnsData.data[startColumnIndex];
               const endColumn = oldColumnsData.data[endColumnIndex];
 
@@ -178,7 +181,7 @@ function Kanban(props) {
           params.projectName,
           'columns',
         ]);
-        queryClient.invalidateQueries(['tasks', 1]);
+        queryClient.invalidateQueries(['tasks', query.data?.data[0].board]);
       },
     }
   );
@@ -214,9 +217,9 @@ function Kanban(props) {
     // console.log('destination.index', destination.index);
     reorderTasks.mutate({
       source_index: source.index,
-      source_droppable_id: parseInt(source.droppableId.slice(-1)),
+      source_droppable_id: parseInt(source.droppableId.slice(7)),
       destination_index: destination.index,
-      destination_droppable_id: parseInt(destination.droppableId.slice(-1)),
+      destination_droppable_id: parseInt(destination.droppableId.slice(7)),
       task_id: parseInt(draggableId.slice(5)),
     });
   }

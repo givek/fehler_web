@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar } from '../components/Navbar';
 import { Avatar } from '@chakra-ui/avatar';
-import { Box, Stack, Text, Wrap, WrapItem } from '@chakra-ui/layout';
+import { Box, Stack, Text, Wrap, WrapItem, HStack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { useDisclosure } from '@chakra-ui/hooks';
 
@@ -14,46 +14,71 @@ import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import TasksTable from '../components/TasksTable';
 import { CreateIssueModal } from '../components/modals/CreateIssueModal';
 import RiskRegister from '../components/RiskRegister';
+import CreateRiskModal from '../components/modals/CreateRiskModal';
+import axios from 'axios';
+import { useQuery } from 'react-query';
+import RiskDetailsModal from '../components/modals/RiskDetailsModal';
+
+function fetchProject(spaceName, projectName, token) {
+  return axios.get(
+    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/info/`,
+    {
+      headers: { Authorization: `Token ${token}` },
+    }
+  );
+}
+
+function fetchRisks(token, spaceName, projectName) {
+  return axios.get(
+    `http://127.0.0.1:8000/api/${spaceName}}/${projectName}/risks/`,
+    {
+      headers: { Authorization: `Token ${token}` },
+    }
+  );
+}
 
 function Risks() {
+  const params = useParams();
+
+  const userToken = localStorage.getItem('userToken');
+  const query = useQuery(
+    ['risks', userToken, params.spaceName, params.projectName],
+    () => fetchRisks(userToken, params.spaceName, params.projectName)
+  );
+
+  // const tasks = query.data?.data.filter(task => column.tasks.includes(task.id));
+
   // const createProjectModalDisclosure = useDisclosure();
+
+  const riskDetailsModalDisclosure = useDisclosure();
+  const [clickedRisk, setClickedRisk] = React.useState(null);
+
   const createIssueModalDisclosure = useDisclosure();
+  const createRiskModalDisclosure = useDisclosure();
   const { userData } = useAuth();
   const user = userData.currentUser;
 
-  const [projects, setProjects] = React.useState([]);
+  // const [projects, setProjects] = React.useState([]);
 
-  const authFehlerApi = useAuthFehlerApi();
+  // const authFehlerApi = useAuthFehlerApi();
 
   const { projectName, spaceName } = useParams();
-  // fetch user projects and set projects state with response.
-  React.useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await authFehlerApi.get(`${spaceName}/projects`);
 
-        console.log(response);
+  const token = window.localStorage.getItem('userToken');
 
-        if (response) {
-          console.log(response.data);
-          setProjects(response.data);
-        }
-      } catch (error) {
-        // TODO: handle errors
-        if (error.response) {
-          console.log(error.response);
-          console.log(error.response.status);
-          console.log(error.response.data.name);
-        }
-        alert(error);
-      }
-    };
-    fetchProjects();
-  }, [authFehlerApi]);
+  const project = useQuery([params.spaceName, params.projectName, 'info'], () =>
+    fetchProject(params.spaceName, params.projectName, token)
+  );
 
-  // if (!projects) {
-  //   return <div>Loading...</div>;
-  // }
+  if (project.isLoading || query.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const risks = query.data?.data;
+
+  console.log(risks);
+
+  console.log('project infor', project.data.data);
 
   return (
     <Box>
@@ -64,11 +89,32 @@ function Risks() {
       />
       <CreateIssueModal
         user={user}
-        projects={projects}
+        projects={[project.data.data]}
         spaceName={spaceName}
         isOpen={createIssueModalDisclosure.isOpen}
         onOpen={createIssueModalDisclosure.onOpen}
         onClose={createIssueModalDisclosure.onClose}
+      />
+
+      <CreateRiskModal
+        user={user}
+        spaceName={spaceName}
+        projectName={projectName}
+        projects={[project.data.data]}
+        isOpen={createRiskModalDisclosure.isOpen}
+        onOpen={createRiskModalDisclosure.onOpen}
+        onClose={createRiskModalDisclosure.onClose}
+      />
+
+      <RiskDetailsModal
+        risk={clickedRisk}
+        user={user}
+        spaceName={spaceName}
+        projectName={projectName}
+        projects={[project.data.data]}
+        isOpen={riskDetailsModalDisclosure.isOpen}
+        onOpen={riskDetailsModalDisclosure.onOpen}
+        onClose={riskDetailsModalDisclosure.onClose}
       />
 
       <Box px="110px" py="48px">
@@ -81,12 +127,26 @@ function Risks() {
           </WrapItem>
         </Wrap>
 
-        <Box my={16}>
+        <Box my={8}>
           <Box py={8}>
-            <Text fontSize="26px">Risk Register</Text>
+            <HStack spacing={6}>
+              <Text fontSize="26px">Risk Register</Text>
+              <Button
+                onClick={createRiskModalDisclosure.onOpen}
+                size="sm"
+                bgColor="tomato"
+                color="white"
+              >
+                Add Risk
+              </Button>
+            </HStack>
           </Box>
           <Box p={2} boxShadow="md" borderRadius="md">
-            <RiskRegister />
+            <RiskRegister
+              risks={risks}
+              setClickedTask={setClickedRisk}
+              onOpen={riskDetailsModalDisclosure.onOpen}
+            />
           </Box>
         </Box>
       </Box>

@@ -4,32 +4,8 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
-function fetchRisks(token, spaceName, projectName) {
-  return axios.get(
-    `http://127.0.0.1:8000/api/${spaceName}}/${projectName}/risks/`,
-    {
-      headers: { Authorization: `Token ${token}` },
-    }
-  );
-}
-
 function RiskRegister(props) {
-  const params = useParams();
-
-  const userToken = localStorage.getItem('userToken');
-  const query = useQuery(
-    ['risks', userToken, params.spaceName, params.projectName],
-    () => fetchRisks(userToken, params.spaceName, params.projectName)
-  );
-
-  if (query.isLoading) {
-    return <div>Loading....</div>;
-  }
-
-  // const tasks = query.data?.data.filter(task => column.tasks.includes(task.id));
-  const risks = query.data?.data;
-
-  console.log(risks);
+  const risks = props.risks;
 
   return (
     <Table variant="striped">
@@ -47,7 +23,13 @@ function RiskRegister(props) {
       </Thead>
       <Tbody fontSize="14px" textTransform="capitalize">
         {risks.map(risk => (
-          <Tr key={risk.id}>
+          <Tr
+            key={risk.id}
+            onClick={() => {
+              props.setClickedTask(risk);
+              props.onOpen();
+            }}
+          >
             <Td>{risk.id}</Td>
             <Td>
               {new Date(risk.date_created).toLocaleDateString('en-US', {
