@@ -4,18 +4,19 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import Task from './Task';
 import { Droppable } from 'react-beautiful-dnd';
+import { useParams } from 'react-router-dom';
 
-import { CreateIssueModal } from './modals/CreateIssueModal';
-
-function fetchTasks(boardId) {
+function fetchTasks(boardId, spaceName, projectName) {
   return axios.get(
-    `http://127.0.0.1:8000/api/MeowSpace/Tuna/${boardId}/tasks/`
+    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/${boardId}/tasks/`
   );
 }
 
 function Column({ column, onOpen, setClickedTask }) {
-  const query = useQuery(['tasks', column.board], () =>
-    fetchTasks(column.board)
+  const params = useParams();
+  const query = useQuery(
+    ['tasks', params.spaceName, params.projectName, column.board],
+    () => fetchTasks(column.board, params.spaceName, params.projectName)
   );
 
   if (query.isLoading) {

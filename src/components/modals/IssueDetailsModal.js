@@ -15,6 +15,7 @@ import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
 import { useQuery, useQueryClient } from 'react-query';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 const issueTypeOptions = [{ key: 'Frontend', value: 'frontend' }];
 
@@ -43,6 +44,7 @@ const validationSchema = Yup.object({
 });
 // When `Kanban` page is directly accessed with url, state object (state: { id: project.id, projectName: project.name }) is not passed through router.
 function IssueDetailsModal(props) {
+  const params = useParams();
   console.log(props.user.email);
 
   console.log('project', props.projects);
@@ -102,7 +104,11 @@ function IssueDetailsModal(props) {
         // props.setProjects(response.data);
         props.onClose();
         queryClient.invalidateQueries('tasks');
-        queryClient.invalidateQueries('MeowSpace', 'Tuna', 'columns');
+        queryClient.invalidateQueries(
+          params.spaceName,
+          params.projectName,
+          'columns'
+        );
       }
     } catch (error) {
       // TODO: handle errors

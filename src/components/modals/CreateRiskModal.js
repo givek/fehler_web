@@ -14,6 +14,7 @@ import { FormikControl } from '../FormikControl';
 import axios from 'axios';
 import { useQuery, useQueryClient } from 'react-query';
 import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
+import { useParams } from 'react-router-dom';
 
 function fetchProjectMembers(spaceName, projectName, token) {
   return axios.get(
@@ -25,6 +26,7 @@ function fetchProjectMembers(spaceName, projectName, token) {
 }
 
 function CreateRiskModal(props) {
+  const params = useParams();
   const userToken = localStorage.getItem('userToken');
   const projectMembers = useQuery(['project-members', props.spaceName], () =>
     fetchProjectMembers(props.spaceName, props.projectName, userToken)
@@ -82,7 +84,7 @@ function CreateRiskModal(props) {
 
     try {
       const response = await authFehlerApi.post(
-        `MeowSpace/Tuna/create-risk/`,
+        `${params.spaceName}/${params.projectName}/create-risk/`,
         data
       );
 

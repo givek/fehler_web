@@ -15,6 +15,7 @@ import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
 import { useQuery, useQueryClient } from 'react-query';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const issueTypeOptions = [{ key: 'Frontend', value: 'frontend' }];
 
@@ -45,8 +46,9 @@ function fetchProjectMembers(spaceName, token) {
 
 // When `Kanban` page is directly accessed with url, state object (state: { id: project.id, projectName: project.name }) is not passed through router.
 export const CreateIssueModal = props => {
-  console.log(props.user.email);
+  const params = useParams();
 
+  console.log(props.user.email);
   const firstProject = props.projects[0];
 
   const userToken = localStorage.getItem('userToken');
@@ -91,9 +93,13 @@ export const CreateIssueModal = props => {
   const onSubmit = async (data = {}, { setErrors }) => {
     console.log(`form data`, data);
 
+    const project = props.projects.filter(
+      project => project.id === parseInt(data.project)
+    );
+
     try {
       const response = await authFehlerApi.post(
-        `MeowSpace/Tuna/create_task/`,
+        `${params.spaceName}/${project.name}/create_task/`,
         data
       );
 
@@ -103,7 +109,11 @@ export const CreateIssueModal = props => {
         // props.setProjects(response.data);
         props.onClose();
         queryClient.invalidateQueries('tasks');
-        queryClient.invalidateQueries('MeowSpace', 'Tuna', 'columns');
+        queryClient.invalidateQueries(
+          params.spaceName,
+          project.name,
+          'columns'
+        );
       }
     } catch (error) {
       // TODO: handle errors
