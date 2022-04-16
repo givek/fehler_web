@@ -193,7 +193,7 @@ function RiskMatrixGrid() {
             height="100px"
             transform="rotate(-180deg)"
             sx={{
-              'writing-mode': 'tb-rl',
+              writingMode: 'tb-rl',
             }}
             minH="500px"
           >
@@ -207,7 +207,7 @@ function RiskMatrixGrid() {
             height="100px"
             transform="rotate(-180deg)"
             sx={{
-              'writing-mode': 'tb-rl',
+              writingMode: 'tb-rl',
             }}
           >
             Very High
@@ -217,7 +217,7 @@ function RiskMatrixGrid() {
             height="100px"
             transform="rotate(-180deg)"
             sx={{
-              'writing-mode': 'tb-rl',
+              writingMode: 'tb-rl',
             }}
           >
             High
@@ -227,7 +227,7 @@ function RiskMatrixGrid() {
             height="100px"
             transform="rotate(-180deg)"
             sx={{
-              'writing-mode': 'tb-rl',
+              writingMode: 'tb-rl',
             }}
           >
             Medium
@@ -237,7 +237,7 @@ function RiskMatrixGrid() {
             height="100px"
             transform="rotate(-180deg)"
             sx={{
-              'writing-mode': 'tb-rl',
+              writingMode: 'tb-rl',
             }}
           >
             Low
@@ -247,7 +247,7 @@ function RiskMatrixGrid() {
             height="100px"
             transform="rotate(-180deg)"
             sx={{
-              'writing-mode': 'tb-rl',
+              writingMode: 'tb-rl',
             }}
           >
             Very Low
