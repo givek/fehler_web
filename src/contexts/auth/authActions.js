@@ -18,7 +18,7 @@ export async function login(data, dispatchToken) {
       return {
         ok: false,
         successMessage: null,
-        errors: { password: error.response.data.errors['non_field_errors'] },
+        errors: { password: error.response.data['non_field_errors'] },
       };
     }
     alert(error);

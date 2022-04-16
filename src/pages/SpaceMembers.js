@@ -5,6 +5,7 @@ import People from '../components/People';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../contexts/auth/authContext';
 
 function fetchSpaceMembers(spaceName, token) {
   return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-members/`, {
@@ -13,6 +14,9 @@ function fetchSpaceMembers(spaceName, token) {
 }
 function SpaceMembers() {
   const params = useParams();
+
+  const { userData } = useAuth();
+  const user = userData.currentUser;
 
   const userToken = localStorage.getItem('userToken');
   const spaceMembersQuery = useQuery(['space-members', params.spaceName], () =>
@@ -27,6 +31,7 @@ function SpaceMembers() {
     <Box>
       <Navbar
         spaceName={params.spaceName}
+        user={user}
         // onOpen={createIssueModalDisclosure.onOpen}
       />
       {/* <CreateIssueModal

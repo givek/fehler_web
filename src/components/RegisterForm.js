@@ -37,8 +37,8 @@ const validationSchema = Yup.object({
     .required('Email is a required field.'),
   password: Yup.string()
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-      'Password must contain at least eight characters, at least one letter and one number.'
+      /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/gm,
+      'password must contain 1 number (0-9), 1 uppercase letters,1 lowercase letters, 1 non-alpha numeric number, password is 8-16 characters with no space'
     )
     .required('Password is required field.'),
   first_name: Yup.string()

@@ -77,6 +77,7 @@ function RiskMatrix() {
     <Box>
       <Navbar
         spaceName={params.spaceName}
+        user={user}
         projectName={params.projectName}
         onOpen={createIssueModalDisclosure.onOpen}
       />

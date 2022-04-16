@@ -84,6 +84,7 @@ function Risks() {
     <Box>
       <Navbar
         spaceName={spaceName}
+        user={user}
         projectName={projectName}
         onOpen={createIssueModalDisclosure.onOpen}
       />

@@ -57,6 +57,7 @@ export const Projects = () => {
   return (
     <Box>
       <Navbar
+        user={user}
         spaceName={spaceName}
         onOpen={createIssueModalDisclosure.onOpen}
       />
