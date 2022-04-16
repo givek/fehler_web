@@ -19,7 +19,6 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 
 const NavLink = props => (
   <Link
@@ -69,7 +68,7 @@ export const Navbar = props => {
         <HStack spacing={8} alignItems={'center'}>
           <Box>
             <Heading fontSize={['24px']} fontWeight="bold" color="#70bae7">
-              Fehler
+              <NavLink url={`/spaces`}>Fehler</NavLink>
             </Heading>
           </Box>
           <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
