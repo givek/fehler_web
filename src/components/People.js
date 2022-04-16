@@ -53,7 +53,7 @@ function People(props) {
           h="142px"
           boxShadow="md"
           borderRadius="md"
-          // onClick={createProjectModalDisclosure.onOpen}
+          onClick={props.onOpen}
         >
           Add new
         </Button>

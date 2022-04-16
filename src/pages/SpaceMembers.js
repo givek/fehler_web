@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/auth/authContext';
 import useAuthFehlerApi from '../hooks/useAuthFehlerApi';
 import { CreateIssueModal } from '../components/modals/CreateIssueModal';
+import { SendInviteModal } from '../components/modals/SendInviteModal';
 
 function fetchSpaceMembers(spaceName, token) {
   return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-members/`, {
@@ -25,6 +26,7 @@ function fetchSpaceMembers(spaceName, token) {
 function SpaceMembers() {
   const params = useParams();
   const createIssueModalDisclosure = useDisclosure();
+  const sendInviteModalDisclosure = useDisclosure();
 
   const [projects, setProjects] = React.useState([]);
 
@@ -84,6 +86,13 @@ function SpaceMembers() {
         onClose={createIssueModalDisclosure.onClose}
       />
 
+      <SendInviteModal
+        spaceName={params.spaceName}
+        isOpen={sendInviteModalDisclosure.isOpen}
+        onOpen={sendInviteModalDisclosure.onOpen}
+        onClose={sendInviteModalDisclosure.onClose}
+      />
+
       <Box px="110px" py="48px">
         <Wrap>
           <WrapItem>
@@ -98,7 +107,11 @@ function SpaceMembers() {
             </Stack>
           </WrapItem>
         </Wrap>
-        <People title="Space Members" people={spaceMembersQuery?.data?.data} />
+        <People
+          onOpen={sendInviteModalDisclosure.onOpen}
+          title="Space Members"
+          people={spaceMembersQuery?.data?.data}
+        />
       </Box>
     </Box>
   );
