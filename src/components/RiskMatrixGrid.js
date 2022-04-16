@@ -162,7 +162,7 @@ function RiskMatrixGrid() {
                         </Box>
                         <Box>
                           <Text fontSize="sm" fontWeight="medium">
-                            Action
+                            Mitigation Action
                           </Text>
                           {risk.mitigation_action}
                         </Box>

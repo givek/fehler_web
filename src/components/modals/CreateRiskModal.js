@@ -178,7 +178,7 @@ function CreateRiskModal(props) {
                 <FormikControl
                   control="textarea"
                   name="mitigation_action"
-                  label="Action"
+                  label="Mitigation Action"
                   size="sm"
                 />
               </Stack>
