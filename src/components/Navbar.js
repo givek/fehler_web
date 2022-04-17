@@ -39,10 +39,7 @@ const NavLink = props => (
 export const Navbar = props => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const Links = [
-    { name: 'Projects', url: `/${props.spaceName}/projects` },
-    { name: 'People', url: `/${props.spaceName}/people` },
-  ];
+  const Links = [{ name: 'Projects', url: `/${props.spaceName}/projects` }];
 
   if (props.projectName) {
     Links.push({
@@ -53,6 +50,12 @@ export const Navbar = props => {
       name: 'Risk Matrix',
       url: `/${props.spaceName}/${props.projectName}/risk-matrix`,
     });
+    Links.push({
+      name: 'People',
+      url: `/${props.spaceName}/${props.projectName}/people`,
+    });
+  } else {
+    Links.push({ name: 'People', url: `/${props.spaceName}/people` });
   }
 
   return (

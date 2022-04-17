@@ -17,6 +17,7 @@ import Kanban from './pages/Kanban';
 import RegisterSuccess from './components/dialogs/RegisterSuccess';
 import Risks from './pages/Risks';
 import RiskMatrix from './pages/RiskMatrix';
+import ProjectMembers from './pages/ProjectMembers';
 
 const theme = extendTheme({
   fonts: {
@@ -51,6 +52,12 @@ function App() {
                 exact
                 path="/:spaceName/projects"
                 component={Projects}
+              />
+
+              <PrivateRoute
+                path="/:spaceName/:projectName/people"
+                exact
+                component={ProjectMembers}
               />
               <PrivateRoute
                 exact
