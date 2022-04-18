@@ -55,15 +55,21 @@ function Column({ column, onOpen, setClickedTask }) {
               ref={provided.innerRef} // used to supple the DOM node our component to react-beautifull-dnd
               {...provided.droppableProps}
             >
-              {column.tasks.map((taskId, index) => (
-                <Task
-                  setClickedTask={setClickedTask}
-                  onOpen={onOpen}
-                  key={taskId}
-                  task={tasks[tasks.findIndex(task => task.id === taskId)]}
-                  index={index}
-                />
-              ))}
+              {column.tasks.map((taskId, index) => {
+                let task = tasks[tasks.findIndex(task => task.id === taskId)];
+                console.log(task);
+                if (typeof task !== 'undefined') {
+                  return (
+                    <Task
+                      setClickedTask={setClickedTask}
+                      onOpen={onOpen}
+                      key={taskId}
+                      task={task}
+                      index={index}
+                    />
+                  );
+                }
+              })}
               {provided.placeholder}
             </Stack>
           )}

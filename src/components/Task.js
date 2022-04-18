@@ -10,11 +10,11 @@ const taskPriority = {
 };
 
 function Task({ task, index, onOpen, setClickedTask }) {
-  const taskDateDue = new Date(task.date_due).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  // const taskDateDue = new Date(task.date_due).toLocaleDateString('en-US', {
+  //   year: 'numeric',
+  //   month: 'long',
+  //   day: 'numeric',
+  // });
   return (
     <Draggable draggableId={`task-${task.id}`} index={index}>
       {(provided, snapshot) => (
@@ -39,7 +39,13 @@ function Task({ task, index, onOpen, setClickedTask }) {
           <Text fontWeight="medium">{task.name}</Text>
           <HStack my={2} alignItems="center">
             <Avatar name={task.reporter_name} size="xs" />
-            <Text fontSize="12px">{taskDateDue}</Text>
+            <Text fontSize="12px">
+              {new Date(task.date_due).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </Text>
           </HStack>
           <HStack spacing={2}>
             {task.tags.map((tag, index) => (

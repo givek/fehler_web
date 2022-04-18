@@ -135,13 +135,13 @@ function IssueDetailsModal(props) {
 
       if (response) {
         // props.setProjects(response.data);
-        props.onClose();
-        queryClient.invalidateQueries('tasks');
         queryClient.invalidateQueries(
           params.spaceName,
           params.projectName,
           'columns'
         );
+        queryClient.invalidateQueries('tasks');
+        props.onClose();
       }
     } catch (error) {
       // TODO: handle errors
