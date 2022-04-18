@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Button,
   Stack,
+  ModalCloseButton,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { FormikControl } from '../FormikControl';
@@ -90,6 +91,30 @@ function RiskDetailsModal(props) {
     }
   }
 
+  async function deleteRisk(riskId) {
+    console.log(`delete form data`, riskId);
+
+    try {
+      const response = await authFehlerApi.delete(`${riskId}/delete-risk/`);
+
+      console.log(response);
+
+      if (response) {
+        // props.setProjects(response.data);
+        props.onClose();
+        queryClient.invalidateQueries('risks');
+      }
+    } catch (error) {
+      // TODO: handle errors
+      if (error.response) {
+        console.log(error.response);
+        console.log(error.response.status);
+        console.log(error.response.data.name);
+      }
+      alert(error);
+    }
+  }
+
   return (
     <Modal size="xl" isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
@@ -101,6 +126,7 @@ function RiskDetailsModal(props) {
         <Form>
           <ModalContent>
             <ModalHeader fontWeight="medium">Update risk</ModalHeader>
+            <ModalCloseButton />
             <ModalBody>
               <Stack spacing={4}>
                 <FormikControl
@@ -168,8 +194,13 @@ function RiskDetailsModal(props) {
               </Stack>
             </ModalBody>
             <ModalFooter>
-              <Button size="sm" variant="ghost" mr={3} onClick={props.onClose}>
-                Close
+              <Button
+                size="sm"
+                mr={3}
+                colorScheme="red"
+                onClick={() => deleteRisk(props.risk.id)}
+              >
+                Delete
               </Button>
               <Button type="submit" size="sm" colorScheme="blue">
                 Update

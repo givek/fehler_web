@@ -61,7 +61,7 @@ function AddProjectMemberModal(props) {
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         <Form>
           <ModalContent>
-            <ModalHeader fontWeight="medium">Invite your teammates</ModalHeader>
+            <ModalHeader fontWeight="medium">Add new member</ModalHeader>
             <ModalBody>
               <FormikControl
                 control="select"

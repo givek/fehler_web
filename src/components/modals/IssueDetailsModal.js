@@ -6,6 +6,7 @@ import {
   ModalContent,
   ModalOverlay,
   ModalFooter,
+  ModalCloseButton,
 } from '@chakra-ui/modal';
 import { Button } from '@chakra-ui/button';
 import { Formik, Form } from 'formik';
@@ -124,6 +125,35 @@ function IssueDetailsModal(props) {
   //   return <div>Loading...</div>;
   // }
 
+  async function deleteTask(taskId) {
+    console.log(`delete form data`, taskId);
+
+    try {
+      const response = await authFehlerApi.delete(`delete_task/${taskId}/`);
+
+      console.log(response);
+
+      if (response) {
+        // props.setProjects(response.data);
+        props.onClose();
+        queryClient.invalidateQueries('tasks');
+        queryClient.invalidateQueries(
+          params.spaceName,
+          params.projectName,
+          'columns'
+        );
+      }
+    } catch (error) {
+      // TODO: handle errors
+      if (error.response) {
+        console.log(error.response);
+        console.log(error.response.status);
+        console.log(error.response.data.name);
+      }
+      alert(error);
+    }
+  }
+
   console.log('props.task', props.task);
   return (
     <Modal size="xl" isOpen={props.isOpen} onClose={props.onClose}>
@@ -136,6 +166,7 @@ function IssueDetailsModal(props) {
         <Form onKeyDown={onKeyDown}>
           <ModalContent>
             <ModalHeader fontWeight="medium">Issue Details</ModalHeader>
+            <ModalCloseButton />
             <ModalBody>
               <Stack spacing={4}>
                 <FormikControl
@@ -220,8 +251,13 @@ function IssueDetailsModal(props) {
               </Stack>
             </ModalBody>
             <ModalFooter>
-              <Button size="sm" variant="ghost" mr={3} onClick={props.onClose}>
-                Close
+              <Button
+                size="sm"
+                mr={3}
+                colorScheme="red"
+                onClick={() => deleteTask(props.task.id)}
+              >
+                Delete
               </Button>
               <Button type="submit" size="sm" colorScheme="blue">
                 Update
