@@ -86,11 +86,11 @@ export const LoginForm = () => {
 
           <ButtonPrimary name="Login" />
         </Stack>
-        <Text {...styles.text}>
+        {/* <Text {...styles.text}>
           <Link to="/login" as={RouterLink} {...styles.link}>
             Forgot password?
           </Link>
-        </Text>
+        </Text> */}
         <Text {...styles.text}>
           Don’t have a fehler account? &nbsp;
           <Link to="/register" as={RouterLink} {...styles.link}>
