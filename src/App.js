@@ -7,7 +7,6 @@ import { Login } from './pages/Login';
 import { CreateSpace } from './pages/CreateSpace';
 import SpaceMembers from './pages/SpaceMembers';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import { Fonts } from './components/Fonts';
 import { Spaces } from './pages/Spaces';
 import { Projects } from './pages/Projects';
@@ -72,7 +71,6 @@ function App() {
                 path="/:spaceName/:projectName/risk-matrix"
                 component={RiskMatrix}
               />
-              <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
           </AuthProvider>
         </Switch>
