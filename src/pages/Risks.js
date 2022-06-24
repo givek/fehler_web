@@ -21,7 +21,7 @@ import RiskDetailsModal from '../components/modals/RiskDetailsModal';
 
 function fetchProject(spaceName, projectName, token) {
   return axios.get(
-    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/info/`,
+    `http://127.0.0.1:8000/api/spaces/${spaceName}/projects/${projectName}/`,
     {
       headers: { Authorization: `Token ${token}` },
     }
@@ -30,7 +30,7 @@ function fetchProject(spaceName, projectName, token) {
 
 function fetchRisks(token, spaceName, projectName) {
   return axios.get(
-    `http://127.0.0.1:8000/api/${spaceName}}/${projectName}/risks/`,
+    `http://127.0.0.1:8000/api/spaces/${spaceName}/projects/${projectName}/risks/`,
     {
       headers: { Authorization: `Token ${token}` },
     }

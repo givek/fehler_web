@@ -91,7 +91,7 @@ const probability = ['VL', 'L', 'M', 'H', 'VH'];
 
 function fetchRisks(token, spaceName, projectName) {
   return axios.get(
-    `http://127.0.0.1:8000/api/${spaceName}}/${projectName}/risks/`,
+    `http://127.0.0.1:8000/api/spaces/${spaceName}/projects/${projectName}/risks/`,
     {
       headers: { Authorization: `Token ${token}` },
     }

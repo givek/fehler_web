@@ -27,7 +27,7 @@ const priorityLevel = [
   { key: 'Low', value: 1 },
 ];
 function fetchProjectMembers(spaceName, token) {
-  return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-members/`, {
+  return axios.get(`http://127.0.0.1:8000/api/spaces/${spaceName}/members/`, {
     headers: { Authorization: `Token ${token}` },
   });
 }
@@ -92,10 +92,9 @@ function IssueDetailsModal(props) {
 
   const onSubmit = async (data = {}, { setErrors }) => {
     console.log(`detail form data`, JSON.stringify(data));
-
     try {
       const response = await authFehlerApi.put(
-        `update_task/${props.task.id}/`,
+        `spaces/${params.spaceName}/projects/${params.projectName}/boards/1/tasks/${props.task.id}/`,
         data
       );
 
@@ -129,7 +128,9 @@ function IssueDetailsModal(props) {
     console.log(`delete form data`, taskId);
 
     try {
-      const response = await authFehlerApi.delete(`delete_task/${taskId}/`);
+      const response = await authFehlerApi.delete(
+        `spaces/${params.spaceName}/projects/${params.projectName}/boards/1/tasks/${taskId}/`
+      );
 
       console.log(response);
 

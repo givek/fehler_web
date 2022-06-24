@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 
 function fetchTasks(boardId, spaceName, projectName) {
   return axios.get(
-    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/${boardId}/tasks/`
+    `http://127.0.0.1:8000/api/spaces/${spaceName}/projects/${projectName}/boards/${boardId}/tasks/`
   );
 }
 

@@ -26,7 +26,7 @@ export const CreateProjectModal = props => {
     try {
       // TODO: current space id is hardcoded, make it variable.
       const response = await authFehlerApi.post(
-        `${props.spaceName}/create-project/`,
+        `spaces/${props.spaceName}/projects/`,
         {
           name: data.project_name,
           // owner: props.user.email,

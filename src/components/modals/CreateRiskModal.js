@@ -18,7 +18,7 @@ import { useParams } from 'react-router-dom';
 
 function fetchProjectMembers(spaceName, projectName, token) {
   return axios.get(
-    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/project-members/`,
+    `http://127.0.0.1:8000/api/spaces/${spaceName}/projects/${projectName}/members/`,
     {
       headers: { Authorization: `Token ${token}` },
     }
@@ -84,7 +84,7 @@ function CreateRiskModal(props) {
 
     try {
       const response = await authFehlerApi.post(
-        `${params.spaceName}/${params.projectName}/create-risk/`,
+        `spaces/${params.spaceName}/projects/${params.projectName}/risks/`,
         data
       );
 

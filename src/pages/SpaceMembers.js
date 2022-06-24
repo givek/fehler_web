@@ -19,7 +19,7 @@ import { CreateIssueModal } from '../components/modals/CreateIssueModal';
 import { SendInviteModal } from '../components/modals/SendInviteModal';
 
 function fetchSpaceMembers(spaceName, token) {
-  return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-members/`, {
+  return axios.get(`http://127.0.0.1:8000/api/spaces/${spaceName}/members/`, {
     headers: { Authorization: `Token ${token}` },
   });
 }
@@ -44,7 +44,7 @@ function SpaceMembers() {
     const fetchProjects = async () => {
       try {
         const response = await authFehlerApi.get(
-          `${params.spaceName}/projects`
+          `spaces/${params.spaceName}/projects`
         );
 
         console.log(response);
