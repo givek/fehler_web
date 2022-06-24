@@ -39,7 +39,7 @@ const validationSchema = Yup.object({
 });
 
 function fetchProjectMembers(spaceName, token) {
-  return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-members/`, {
+  return axios.get(`http://127.0.0.1:8000/api/spaces/${spaceName}/members/`, {
     headers: { Authorization: `Token ${token}` },
   });
 }
@@ -98,8 +98,9 @@ export const CreateIssueModal = props => {
     );
 
     try {
+      // remove hardcoded board id.
       const response = await authFehlerApi.post(
-        `${params.spaceName}/${project.name}/create_task/`,
+        `spaces/${params.spaceName}/projects/${project.name}/boards/1/tasks/`,
         data
       );
 

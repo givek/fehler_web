@@ -22,7 +22,7 @@ export const CreateSpaceModal = props => {
     console.log(`form data`, data.name);
 
     try {
-      const response = await authFehlerApi.post(`create-space/`, {
+      const response = await authFehlerApi.post(`spaces/`, {
         name: data.name,
         owner: props.user.email,
       });

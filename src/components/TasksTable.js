@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 function fetchTasks(token, spaceName) {
-  return axios.get(`http://127.0.0.1:8000/api/${spaceName}/space-tasks/`, {
+  return axios.get(`http://127.0.0.1:8000/api/spaces/${spaceName}/tasks/`, {
     headers: { Authorization: `Token ${token}` },
   });
 }

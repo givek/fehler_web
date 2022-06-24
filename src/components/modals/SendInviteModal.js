@@ -20,7 +20,7 @@ export const SendInviteModal = props => {
 
     try {
       const response = await authFehlerApi.post(
-        `${props.spaceName}/invite/`,
+        `spaces/${props.spaceName}/invite/`,
         data
       );
 

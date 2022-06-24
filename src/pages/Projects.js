@@ -29,7 +29,9 @@ export const Projects = () => {
   React.useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await authFehlerApi.get(`${spaceName}/projects`);
+        const response = await authFehlerApi.get(
+          `spaces/${spaceName}/projects/`
+        );
 
         console.log(response);
 

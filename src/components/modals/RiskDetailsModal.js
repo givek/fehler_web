@@ -18,7 +18,7 @@ import useAuthFehlerApi from '../../hooks/useAuthFehlerApi';
 
 function fetchProjectMembers(spaceName, projectName, token) {
   return axios.get(
-    `http://127.0.0.1:8000/api/${spaceName}/${projectName}/project-members/`,
+    `http://127.0.0.1:8000/api/spaces/${spaceName}/projects/${projectName}/members/`,
     {
       headers: { Authorization: `Token ${token}` },
     }
@@ -71,7 +71,10 @@ function RiskDetailsModal(props) {
     console.log('risk modal', JSON.stringify(data));
 
     try {
-      const response = await authFehlerApi.put(`${data.id}/update-risk/`, data);
+      const response = await authFehlerApi.put(
+        `spaces/${props.spaceName}/projects/${props.projectName}/risks/${data.id}/`,
+        data
+      );
 
       console.log(response);
 
@@ -95,7 +98,9 @@ function RiskDetailsModal(props) {
     console.log(`delete form data`, riskId);
 
     try {
-      const response = await authFehlerApi.delete(`${riskId}/delete-risk/`);
+      const response = await authFehlerApi.delete(
+        `spaces/${props.spaceName}/projects/${props.projectName}/risks/${riskId}/`
+      );
 
       console.log(response);
 
