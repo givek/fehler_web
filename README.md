@@ -3,7 +3,7 @@
 Fehler is a project management software which let teams plan, track and manage software developement
 projects.
 
-This is the fehler REST API developed to provide and store data for [Fehler Website](https://github.com/givek/fehler_web/).
+This is the fehler Web Client developed to consume the [Fehler REST API](https://github.com/givek/fehler_core/).
 
 ## Technologies
 
